@@ -14,7 +14,7 @@ public class SimpleFactoryModal {
             case "PessoaModal" -> new PessoaFactory();
             case "MensalidadeModal" -> new MensalidadeFactory();
             case "ResidenciaModal" -> new ResidenciaFactory();
-            default -> null;
+            default -> throw new IllegalArgumentException("Nenhuma fábrica registrada para ");
         };
         
         return factory;
