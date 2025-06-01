@@ -43,8 +43,8 @@ public class PessoaModal {
         this.nome = nome;
     }
 
-    public Date getDt_nasc() {
-        return dt_nasc;
+    public String getDt_nasc() {
+        return dt_nasc.toString();
     }
 
     public void setDt_nasc(Date dt_nasc) {
@@ -66,6 +66,9 @@ public class PessoaModal {
     public void setRg(String rg) {
         this.rg = rg;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "id=" + id + ", nome=" + nome + ", dt_nasc=" + dt_nasc + ", cpf=" + cpf + ", rg=" + rg + '\n';
+    }
 }
