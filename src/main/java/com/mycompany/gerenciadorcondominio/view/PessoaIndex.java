@@ -4,21 +4,31 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class PessoaIndex extends javax.swing.JFrame {
-
+    PessoaController pessoaController = new PessoaController();
     /**
      * Creates new form ResidenciaShow
      */
     public PessoaIndex() {
         screenConfigs();
         initComponents();
+        
+        try{        
+            pessoaController.index(moradoresTable);
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
     }
     
     private void screenConfigs() {
@@ -50,6 +60,9 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        moradoresTable = new javax.swing.JTable();
+        visualizarBtn = new javax.swing.JButton();
+        cadastrarBtn = new javax.swing.JButton();
         jTable1 = new javax.swing.JTable();
         jButton7 = new javax.swing.JButton();
 
@@ -152,19 +165,19 @@ public class PessoaIndex extends javax.swing.JFrame {
         jButton6.setText("Visualizar");
         jButton6.setName("visualizarBtn"); // NOI18N
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
+        moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
-                "Nome", "CPF", "Casas", "Responsável"
+                "ID", "Nome", "CPF", "Casas"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -178,7 +191,28 @@ public class PessoaIndex extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(moradoresTable);
+
+        visualizarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        visualizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        visualizarBtn.setText("Visualizar");
+        visualizarBtn.setName("visualizarBtn"); // NOI18N
+        visualizarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visualizarBtnActionPerformed(evt);
+            }
+        });
+
+
+        cadastrarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        cadastrarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cadastrarBtn.setText("Cadastrar");
+        cadastrarBtn.setName("cadastrarBtn"); // NOI18N
+        cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarBtnActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(204, 204, 255));
         jButton7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -225,6 +259,7 @@ public class PessoaIndex extends javax.swing.JFrame {
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -242,6 +277,25 @@ public class PessoaIndex extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = moradoresTable.getSelectedRow();
+        if(linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(rootPane, "Selecione um morador para visualizar");
+        }
+        else{
+            int id = (Integer) moradoresTable.getValueAt(linhaSelecionada, 0);
+            new PessoaShow(id).setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_visualizarBtnActionPerformed
+
+    private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
+        // TODO add your handling code here:
+        new PessoaNew().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cadastrarBtnActionPerformed
 
     private void pessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pessoaBtnActionPerformed
         this.setVisible(false);
@@ -361,6 +415,8 @@ public class PessoaIndex extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+
+    private javax.swing.JButton cadastrarBtn;
     private javax.swing.JButton houseBtn;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
@@ -371,6 +427,8 @@ public class PessoaIndex extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable moradoresTable;
+    private javax.swing.JButton visualizarBtn;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton logoutBtn;
     private javax.swing.JButton paymentBtn;

@@ -4,9 +4,15 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import java.awt.Color;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,6 +27,7 @@ public class PessoaEdit extends javax.swing.JFrame {
     private JLabel residenciaNumero;
     private JLabel residenciaResponsavel;
     private JLabel residenciaCep;
+    PessoaController pessoaController = new PessoaController();
 
 
     public PessoaEdit() {
@@ -73,13 +80,13 @@ public class PessoaEdit extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        moradorNomeField = new javax.swing.JTextField();
+        moradorDtNascimentoField = new javax.swing.JFormattedTextField();
+        moradorRgField = new javax.swing.JFormattedTextField();
+        moradorCpfField = new javax.swing.JFormattedTextField();
+        salvarBtn = new javax.swing.JButton();
+        excluirBtn = new javax.swing.JButton();
+        cancelarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -179,28 +186,28 @@ public class PessoaEdit extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Data de nascimento");
 
-        jTextField1.setText("Joaquim da Silva");
-        jTextField1.setName("moradorNomeField"); // NOI18N
+        moradorNomeField.setText("Joaquim da Silva");
+        moradorNomeField.setName("moradorNomeField"); // NOI18N
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextField1.setText("10012001");
-        jFormattedTextField1.setName("moradorDtNascimentoField"); // NOI18N
+        moradorDtNascimentoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        moradorDtNascimentoField.setText("10012001");
+        moradorDtNascimentoField.setName("moradorDtNascimentoField"); // NOI18N
 
         try {
-            jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
+            moradorRgField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField2.setText("12.123.123-1 ");
-        jFormattedTextField2.setName("moradorRgField"); // NOI18N
+        moradorRgField.setText("12.123.123-1 ");
+        moradorRgField.setName("moradorRgField"); // NOI18N
 
         try {
-            jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+            moradorCpfField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField3.setText("123.123.123-12");
-        jFormattedTextField3.setName("moradorCpfField"); // NOI18N
+        moradorCpfField.setText("123.123.123-12");
+        moradorCpfField.setName("moradorCpfField"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -213,13 +220,13 @@ public class PessoaEdit extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(moradorCpfField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(285, 285, 285)
-                                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(moradorRgField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 92, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(moradorNomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,7 +236,7 @@ public class PessoaEdit extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel11)
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(moradorDtNascimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -241,50 +248,50 @@ public class PessoaEdit extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField1))
+                    .addComponent(moradorNomeField, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(moradorDtNascimentoField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField3))
+                    .addComponent(moradorRgField, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                    .addComponent(moradorCpfField))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 255));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setText("Salvar");
-        jButton2.setName("salvarBtn"); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        salvarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        salvarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        salvarBtn.setText("Salvar");
+        salvarBtn.setName("salvarBtn"); // NOI18N
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                salvarBtnActionPerformed(evt);
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("Excluir");
-        jButton1.setToolTipText("");
-        jButton1.setActionCommand("");
-        jButton1.setName("excluirBtn"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        excluirBtn.setBackground(new java.awt.Color(204, 204, 255));
+        excluirBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        excluirBtn.setText("Excluir");
+        excluirBtn.setToolTipText("");
+        excluirBtn.setActionCommand("");
+        excluirBtn.setName("excluirBtn"); // NOI18N
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                excluirBtnActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setText("Cancelar");
-        jButton3.setToolTipText("");
-        jButton3.setActionCommand("");
-        jButton3.setName("cancelarBtn"); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        cancelarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        cancelarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cancelarBtn.setText("Cancelar");
+        cancelarBtn.setToolTipText("");
+        cancelarBtn.setActionCommand("");
+        cancelarBtn.setName("cancelarBtn"); // NOI18N
+        cancelarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                cancelarBtnActionPerformed(evt);
             }
         });
 
@@ -302,11 +309,11 @@ public class PessoaEdit extends javax.swing.JFrame {
                 .addGap(0, 47, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(192, 192, 192)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(salvarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -322,32 +329,58 @@ public class PessoaEdit extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(141, 141, 141)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salvarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // salvar
-        new PessoaIndex().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
+        // botão de salvar
+        
+        // dados da pessoa
+        String nome = moradorNomeField.getText();
+        String dtNascimentoString = moradorNomeField.getText();
+        String cpf = moradorCpfField.getText();
+        String rg = moradorRgField.getText();
+        
+        try{
+            java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
+            Date dtNascimento = new Date(utilDate.getTime());
+            
+            try{
+                if(pessoaController.updateDados(nome, dtNascimento, cpf, rg, 1) == 1){
+                    JOptionPane.showMessageDialog(rootPane, "Morador atualizado");
+                    
+                    new PessoaIndex().setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Não foi possível atualizar o morador");
+                }
+            }
+            catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados ou ao editar morador");
+            }
+        }
+        catch(ParseException e){
+            JOptionPane.showMessageDialog(rootPane, "Data inválida. Formato correto: xx/xx/xxxx");
+        }
+    }//GEN-LAST:event_salvarBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
         // excluir
         new PessoaIndex().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_excluirBtnActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
         // cancelar
         new PessoaIndex().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_cancelarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -392,12 +425,8 @@ public class PessoaEdit extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
+    private javax.swing.JButton cancelarBtn;
+    private javax.swing.JButton excluirBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -414,6 +443,10 @@ public class PessoaEdit extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JFormattedTextField moradorCpfField;
+    private javax.swing.JFormattedTextField moradorDtNascimentoField;
+    private javax.swing.JTextField moradorNomeField;
+    private javax.swing.JFormattedTextField moradorRgField;
+    private javax.swing.JButton salvarBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,25 +4,26 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.MensalidadeController;
+import com.mycompany.gerenciadorcondominio.model.PessoaModal;
+import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class MensalidadeShow extends javax.swing.JFrame {
-    private JLabel enderecoRuaTxt;
-    private JLabel enderecoNumeroTxt;
-    private JLabel enderecoCepTxt;
+    MensalidadeController mensalidadeController = new MensalidadeController();
+    private int id;
     
-    public MensalidadeShow() {
+    public MensalidadeShow(int id) {
         screenConfigs();
         initComponents();
-        enderecoRuaTxt.setText("");
-        enderecoNumeroTxt.setText("");
-        enderecoCepTxt.setText("");
+        this.id = id;
     }
     
     private void screenConfigs() {
@@ -45,13 +46,13 @@ public class MensalidadeShow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        residenciaRuaTxt = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        residenciaNumeroTxt = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        residenciaCepTxt = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        mensalidadesTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
 
@@ -69,20 +70,20 @@ public class MensalidadeShow extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Número");
 
-        jLabel9.setText("Avenida das Flores");
-        jLabel9.setName("enderecoRuaTxt"); // NOI18N
+        residenciaRuaTxt.setText("Avenida das Flores");
+        residenciaRuaTxt.setName("enderecoRuaTxt"); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("CEP");
 
-        jLabel6.setText("23");
-        jLabel6.setName("enderecoNumeroTxt"); // NOI18N
+        residenciaNumeroTxt.setText("23");
+        residenciaNumeroTxt.setName("enderecoNumeroTxt"); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Rua");
 
-        jLabel13.setText("12123123");
-        jLabel13.setName("enderecoCepTxt"); // NOI18N
+        residenciaCepTxt.setText("12123123");
+        residenciaCepTxt.setName("enderecoCepTxt"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -95,7 +96,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
                         .addComponent(jLabel12)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(residenciaRuaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 18, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -103,9 +104,9 @@ public class MensalidadeShow extends javax.swing.JFrame {
                         .addComponent(jLabel10)
                         .addGap(168, 168, 168))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(residenciaNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(residenciaCepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(130, 130, 130))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -114,20 +115,20 @@ public class MensalidadeShow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(residenciaRuaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(residenciaNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(residenciaCepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        mensalidadesTable.setBackground(new java.awt.Color(204, 204, 255));
+        mensalidadesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -152,7 +153,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(mensalidadesTable);
 
         jButton2.setBackground(new java.awt.Color(204, 204, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -206,7 +207,9 @@ public class MensalidadeShow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // editar
+        // botão de editar
+        new ResidenciaEdit(id).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -240,7 +243,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MensalidadeShow().setVisible(true);
+                new MensalidadeShow(1).setVisible(true);
             }
         });
     }
@@ -250,13 +253,13 @@ public class MensalidadeShow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable mensalidadesTable;
+    private javax.swing.JLabel residenciaCepTxt;
+    private javax.swing.JLabel residenciaNumeroTxt;
+    private javax.swing.JLabel residenciaRuaTxt;
     // End of variables declaration//GEN-END:variables
 }

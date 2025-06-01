@@ -12,13 +12,14 @@ import javax.swing.JFrame;
  * @author Maria Luiza
  */
 public class ResidenciaEdit extends javax.swing.JFrame {
-
+    private int id;
     /**
      * Creates new form ResidenciaShow
      */
-    public ResidenciaEdit() {
+    public ResidenciaEdit(int id) {
         screenConfigs();
         initComponents();
+        this.id = id;
     }
 
     private void screenConfigs() {
@@ -226,8 +227,8 @@ public class ResidenciaEdit extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        new ResidenciaShow().setVisible(true);
+        // botão de salvar
+        new ResidenciaShow(id).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -270,7 +271,7 @@ public class ResidenciaEdit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidenciaEdit().setVisible(true);
+                new ResidenciaEdit(1).setVisible(true);
             }
         });
     }

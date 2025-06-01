@@ -12,13 +12,15 @@ import javax.swing.JFrame;
  * @author Maria Luiza
  */
 public class MensalidadeEdit extends javax.swing.JFrame {
-
+    private int id;
     /**
      * Creates new form ResidenciaShow
      */
-    public MensalidadeEdit() {
+
+    public MensalidadeEdit(int id) {
         screenConfigs();
         initComponents();
+        this.id = id;
     }
     
     private void screenConfigs() {
@@ -226,11 +228,15 @@ public class MensalidadeEdit extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // botão de pagar
+        new MensalidadeShow(id).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        // botão de cancelar
+        new MensalidadeShow(id).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -266,7 +272,7 @@ public class MensalidadeEdit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MensalidadeEdit().setVisible(true);
+                new MensalidadeEdit(1).setVisible(true);
             }
         });
     }
