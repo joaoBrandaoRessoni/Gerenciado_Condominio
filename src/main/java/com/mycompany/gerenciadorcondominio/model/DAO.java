@@ -19,6 +19,23 @@ import java.util.List;
  */
 public class DAO {
 
+    public static ResultSet runExecuteQuery(String sql, List<Object> params) throws SQLException, IllegalArgumentException {
+        DatabaseSingleton bdInfo = DatabaseSingleton.getInstance();
+        Connection connection = DriverManager.getConnection(bdInfo.getUrl(), bdInfo.getUser(), bdInfo.getPassword());
+        // Criar um Statement para executar a consulta
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        //Roda parametro por parametro para adcionar no sql
+        for (int i = 0; i < params.size(); i++) {
+            statement.setObject(i + 1, params.get(i));
+        }
+        // Executar a consulta e obter o resultado
+        ResultSet result = statement.executeQuery();
+        statement.close();
+        
+        return result;
+    }
+    
     public static List runExecuteQuery(String sql, List<Object> params, String nomeModal) throws SQLException, IllegalArgumentException {
         DatabaseSingleton bdInfo = DatabaseSingleton.getInstance();
         Connection connection = DriverManager.getConnection(bdInfo.getUrl(), bdInfo.getUser(), bdInfo.getPassword());
