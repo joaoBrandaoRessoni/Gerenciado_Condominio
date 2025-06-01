@@ -100,7 +100,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Component id="jLabel9" min="-2" pref="616" max="-2" attributes="0"/>
+                          <Component id="residenciaRuaTxt" min="-2" pref="616" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -110,9 +110,9 @@
                           <EmptySpace min="-2" pref="168" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel6" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="residenciaNumeroTxt" min="-2" pref="70" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jLabel13" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="residenciaCepTxt" min="-2" pref="70" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -125,7 +125,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel12" min="-2" pref="25" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel9" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="residenciaRuaTxt" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel4" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
@@ -133,8 +133,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel6" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="jLabel13" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="residenciaNumeroTxt" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="residenciaCepTxt" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -150,7 +150,7 @@
             <Property name="text" type="java.lang.String" value="N&#xfa;mero"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel9">
+        <Component class="javax.swing.JLabel" name="residenciaRuaTxt">
           <Properties>
             <Property name="text" type="java.lang.String" value="Avenida das Flores"/>
             <Property name="name" type="java.lang.String" value="enderecoRuaTxt" noResource="true"/>
@@ -164,7 +164,7 @@
             <Property name="text" type="java.lang.String" value="CEP"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel6">
+        <Component class="javax.swing.JLabel" name="residenciaNumeroTxt">
           <Properties>
             <Property name="text" type="java.lang.String" value="23"/>
             <Property name="name" type="java.lang.String" value="enderecoNumeroTxt" noResource="true"/>
@@ -178,7 +178,7 @@
             <Property name="text" type="java.lang.String" value="Rua"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel13">
+        <Component class="javax.swing.JLabel" name="residenciaCepTxt">
           <Properties>
             <Property name="text" type="java.lang.String" value="12123123"/>
             <Property name="name" type="java.lang.String" value="enderecoCepTxt" noResource="true"/>
@@ -193,7 +193,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="mensalidadesTable">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="cc" red="cc" type="rgb"/>
