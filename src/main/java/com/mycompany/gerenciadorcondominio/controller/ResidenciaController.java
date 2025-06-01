@@ -94,30 +94,38 @@ public class ResidenciaController {
         String sql = "SELECT p.* FROM pessoas AS p "
                 + "JOIN morador_residencia ON id_pessoa = p.id "
                 + "WHERE id_residencia = ?";
-        ResultSet moradores = DAO.runExecuteQuery(sql, new ArrayList<>());
-        
-        int rows = 0;
-
-        if (moradores.last()) {
-            rows = moradores.getRow();
-            moradores.beforeFirst();
-        }
+        List<PessoaModal> moradores = DAO.runExecuteQuery(sql, new ArrayList<>(), "PessoaModal");
 
         DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
-        dtm.setRowCount(rows);
+        dtm.setRowCount(moradores.size());
         jTable.setModel(dtm);
 
         int posicaoLinha = 0;
 
-        while (moradores.next()) {
-            jTable.setValueAt(moradores.getString("nome"), posicaoLinha, 0);
-            jTable.setValueAt(moradores.getString("cpf"), posicaoLinha, 1);
-            jTable.setValueAt(moradores.getString("cpf"), posicaoLinha, 2);
+        for(int i = 0; i< moradores.size(); i++){
+            jTable.setValueAt(((PessoaModal)moradores.get(i)).getNome(), posicaoLinha, 0);
+            jTable.setValueAt(((PessoaModal)moradores.get(i)).getCpf(), posicaoLinha, 1);
+            
+            sql = "SELECT count(*) as cont FROM pessoas p "
+                    + "JOIN residencias r ON id_proprietario = p.id "
+                    + "WHERE p.id = ?";
+            List<Object> params = new ArrayList();
+            params.add(((PessoaModal)moradores.get(i)).getId());
+            ResultSet dados = DAO.runExecuteQuery(sql, params);
+            
+            boolean existe = false;
+            while(dados.next()){
+                if(dados.getInt("cont") > 0){
+                    existe = true;
+                }
+            }
+            
+            dados.close();
+            
+            jTable.setValueAt(existe ? "Sim" : "Não", posicaoLinha, 2);
             
             posicaoLinha++;
         }
-
-        moradores.close();
 
         return jTable;
     }
