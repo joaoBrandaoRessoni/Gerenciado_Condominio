@@ -18,10 +18,19 @@ public class MensalidadeShow extends javax.swing.JFrame {
     private JLabel enderecoCepTxt;
     
     public MensalidadeShow() {
+        screenConfigs();
         initComponents();
         enderecoRuaTxt.setText("");
         enderecoNumeroTxt.setText("");
         enderecoCepTxt.setText("");
+    }
+    
+    private void screenConfigs() {
+        this.setBackground(new Color(30, 144, 255));
+        this.setSize(950, 700);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
     }
 
     /**
@@ -231,10 +240,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new MensalidadeShow();
-                frame.setBackground(new Color(30, 144, 255));
-                frame.setSize(800, 600);
-                frame.setVisible(true);
+                new MensalidadeShow().setVisible(true);
             }
         });
     }

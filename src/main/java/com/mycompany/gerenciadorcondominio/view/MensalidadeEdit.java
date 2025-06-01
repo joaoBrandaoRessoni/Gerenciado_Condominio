@@ -17,7 +17,16 @@ public class MensalidadeEdit extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public MensalidadeEdit() {
+        screenConfigs();
         initComponents();
+    }
+    
+    private void screenConfigs() {
+        this.setBackground(new Color(30, 144, 255));
+        this.setSize(950, 700);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
     }
 
     /**
@@ -257,10 +266,7 @@ public class MensalidadeEdit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new MensalidadeEdit();
-                frame.setBackground(new Color(30, 144, 255));
-                frame.setSize(800, 600);
-                frame.setVisible(true);
+                new MensalidadeEdit().setVisible(true);
             }
         });
     }

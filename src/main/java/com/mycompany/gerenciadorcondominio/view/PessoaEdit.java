@@ -24,6 +24,7 @@ public class PessoaEdit extends javax.swing.JFrame {
 
 
     public PessoaEdit() {
+        screenConfigs();
         initComponents();
         
         // dados da pessoa
@@ -37,6 +38,14 @@ public class PessoaEdit extends javax.swing.JFrame {
         residenciaNumero.setText("");
         residenciaResponsavel.setText("");
         residenciaCep.setText("");
+    }
+    
+    private void screenConfigs() {
+        this.setBackground(new Color(30, 144, 255));
+        this.setSize(950, 700);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
     }
 
     /**
@@ -377,12 +386,7 @@ public class PessoaEdit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new PessoaEdit();
-                frame.setBackground(new Color(30, 144, 255));
-                frame.setSize(800, 600);
-                frame.setVisible(true);
-                
-                
+                new PessoaEdit().setVisible(true);
             }
         });
     }

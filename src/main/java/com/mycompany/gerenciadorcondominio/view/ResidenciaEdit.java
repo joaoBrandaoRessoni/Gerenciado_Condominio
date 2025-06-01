@@ -17,9 +17,18 @@ public class ResidenciaEdit extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public ResidenciaEdit() {
+        screenConfigs();
         initComponents();
     }
 
+    private void screenConfigs() {
+        this.setBackground(new Color(30, 144, 255));
+        this.setSize(950, 700);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -261,10 +270,7 @@ public class ResidenciaEdit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new ResidenciaEdit();
-                frame.setBackground(new Color(30, 144, 255));
-                frame.setSize(800, 600);
-                frame.setVisible(true);
+                new ResidenciaEdit().setVisible(true);
             }
         });
     }
