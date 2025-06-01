@@ -6,7 +6,6 @@ package com.mycompany.gerenciadorcondominio.view;
 
 import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
-import com.mycompany.gerenciadorcondominio.model.PessoaModal;
 import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
 import java.sql.Date;
@@ -32,7 +31,7 @@ public class PessoaNew extends javax.swing.JFrame {
         String residenciaTexto;
         
         try{
-            List<ResidenciaModal> residencias = new ResidenciaController().index();
+            List<ResidenciaModal> residencias = new PessoaController().showAllResidencias();
             for(ResidenciaModal residencia : residencias){
                 residenciaTexto = residencia.getId() + " - " + residencia.getLogradouro() + ", Nº" + residencia.getNumero(); 
                 residenciaAtualComboBox.addItem(residenciaTexto);
@@ -244,28 +243,49 @@ public class PessoaNew extends javax.swing.JFrame {
         String cpf = moradorCpfField.getText();
         String rg = moradorRgField.getText();
 
-        try{
-            java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
-            Date dtNascimento = new Date(utilDate.getTime());
-
-            // adicionar novo registro de pessoa
+        if(nome != null && dtNascimentoString != null && cpf != null && rg != null){
+            
             try{
-                if(pessoaController.inserir(nome, dtNascimento, cpf, rg) == 1){
-                    JOptionPane.showMessageDialog(rootPane, nome + " cadastrado(a)!");
-                    
-                    // voltar para o index
-                    new PessoaIndex().setVisible(true);
-                    this.dispose();
-                }else{
-                    JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar o morador " + nome);
+                java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
+                Date dtNascimento = new Date(utilDate.getTime());
+                String residenciaSelecionada = (String) residenciaAtualComboBox.getSelectedItem();
+
+                // adicionar novo registro de pessoa
+                try{
+                    if(pessoaController.inserir(nome, dtNascimento, cpf, rg) == 1){
+                        if(residenciaSelecionada != null){                        
+                            // atribuir a nova pessoa à residência selecionada
+                            String idString = residenciaSelecionada.split(" - ")[0];
+                            int idResidencia = Integer.parseInt(idString);
+
+                            if((new ResidenciaController().adicionarMorador(1, idResidencia)) == 1){
+                                JOptionPane.showMessageDialog(rootPane, nome + " cadastrado(a) e fazendo parte da Residência");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar " + nome + " à residência");
+                            }
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(rootPane, nome + " cadastrado(a)!");
+                        }                    
+
+                        // voltar para o index
+                        new PessoaIndex().setVisible(true);
+                        this.dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar o morador " + nome);
+                    }
+                }
+                catch(SQLException e){
+                    JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados ou ao cadastrar morador");
                 }
             }
-            catch(SQLException e){
-                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados ou ao cadastrar morador");
+            catch(ParseException e){
+                JOptionPane.showMessageDialog(rootPane, "Data inválida. Formato correto: xx/xx/xxxx");
             }
         }
-        catch(ParseException e){
-            JOptionPane.showMessageDialog(rootPane, "Data inválida. Formato correto: xx/xx/xxxx");
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Nome, data de nascimento, rg e cpf são obrigatórios");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

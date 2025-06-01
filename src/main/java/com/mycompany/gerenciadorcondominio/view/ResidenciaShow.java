@@ -41,6 +41,7 @@ public class ResidenciaShow extends javax.swing.JFrame {
             proprietarioNomeTxt.setText(pessoa.getNome());
             proprietarioCpfTxt.setText(pessoa.getCpf());
             
+            // dados dos moradoeres da residência
             residenciaController.showMoradores(id, moradoresTable);
         }
         catch(SQLException e){
@@ -299,7 +300,7 @@ public class ResidenciaShow extends javax.swing.JFrame {
 
     private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
         // TODO add your handling code here:
-        new ResidenciaEdit().setVisible(true);
+        new ResidenciaEdit(id).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 
