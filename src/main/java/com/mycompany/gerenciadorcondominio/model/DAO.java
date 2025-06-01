@@ -4,6 +4,8 @@
  */
 package com.mycompany.gerenciadorcondominio.model;
 
+import com.mycompany.gerenciadorcondominio.model.Factory.SimpleFactoryModal;
+import com.mycompany.gerenciadorcondominio.model.Factory.FactoryModal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

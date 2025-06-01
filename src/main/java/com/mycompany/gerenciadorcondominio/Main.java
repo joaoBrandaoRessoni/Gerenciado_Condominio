@@ -4,14 +4,17 @@
 
 package com.mycompany.gerenciadorcondominio;
 
+import com.mycompany.gerenciadorcondominio.view.MainScreen;
+
 
 /**
  *
  * @author joao_
  */
-public class GerenciadorCondominio {
+public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello");
+        MainScreen m = new MainScreen();
+        m.setVisible(true);
     }
 }

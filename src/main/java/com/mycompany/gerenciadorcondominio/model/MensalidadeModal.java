@@ -43,8 +43,8 @@ public class MensalidadeModal {
         this.id_residencia = id_residencia;
     }
 
-    public Date getVencimento() {
-        return vencimento;
+    public String getVencimento() {
+        return vencimento.toString();
     }
 
     public void setVencimento(Date vencimento) {
@@ -65,5 +65,10 @@ public class MensalidadeModal {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "id=" + id + ", id_residencia=" + id_residencia + ", vencimento=" + vencimento + ", valor=" + valor + ", status=" + status + '\n';
     }
 }

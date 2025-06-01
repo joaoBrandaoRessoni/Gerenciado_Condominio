@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.gerenciadorcondominio.model;
+package com.mycompany.gerenciadorcondominio.model.Factory;
 
+import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class ResidenciaFactory implements FactoryModal {
             residencia.setNumero(rs.getInt("numero"));
             residencia.setCep(rs.getString("cep"));
             residencia.setLogradouro(rs.getString("logradouro"));
-            residencia.setStatus(rs.getInt("status"));
+            residencia.setDataCriacao(rs.getDate("data_criacao"));
             dados.add(residencia);
         }
         
