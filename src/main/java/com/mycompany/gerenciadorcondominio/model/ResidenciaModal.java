@@ -4,6 +4,8 @@
  */
 package com.mycompany.gerenciadorcondominio.model;
 
+import java.sql.Date;
+
 /**
  *
  * @author joao_
@@ -14,17 +16,17 @@ public class ResidenciaModal {
     private int numero;
     private String cep;
     private String logradouro;
-    private int status;
+    private Date data_criacao;
     
     public ResidenciaModal(){}
 
-    public ResidenciaModal(int id, int id_proprietario, int numero, String cep, String logradouro, int status) {
+    public ResidenciaModal(int id, int id_proprietario, int numero, String cep, String logradouro, Date data_criacao) {
         this.id = id;
         this.id_proprietario = id_proprietario;
         this.numero = numero;
         this.cep = cep;
         this.logradouro = logradouro;
-        this.status = status;
+        this.data_criacao = data_criacao;
     }
 
     public int getId() {
@@ -67,12 +69,17 @@ public class ResidenciaModal {
         this.logradouro = logradouro;
     }
 
-    public int getStatus() {
-        return status;
+    public String getDataCriacao() {
+        return data_criacao.toString();
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setDataCriacao(Date data_criacao) {
+        this.data_criacao = data_criacao;
+    }
+
+    @Override
+    public String toString() {
+        return "id=" + id + ", id_proprietario=" + id_proprietario + ", numero=" + numero + ", cep=" + cep + ", logradouro=" + logradouro + ", data_criacao=" + data_criacao + '\n';
     }
     
     
