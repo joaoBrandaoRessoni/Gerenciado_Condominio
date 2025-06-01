@@ -4,20 +4,30 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class ResidenciaIndex extends javax.swing.JFrame {
-
+    ResidenciaController residenciaController = new ResidenciaController();
     /**
      * Creates new form ResidenciaShow
      */
     public ResidenciaIndex() {
         initComponents();
+        
+        try{        
+            residenciaController.index(residenciasTable);
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
     }
 
     /**
@@ -31,7 +41,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        residenciasTable = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -41,8 +51,8 @@ public class ResidenciaIndex extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Residências");
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        residenciasTable.setBackground(new java.awt.Color(204, 204, 255));
+        residenciasTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -67,7 +77,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(residenciasTable);
 
         jButton1.setBackground(new java.awt.Color(204, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -126,6 +136,15 @@ public class ResidenciaIndex extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        int linhaSelecionada = residenciasTable.getSelectedRow();
+        if(linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(rootPane, "Selecione uma residência para visualizar");
+        }
+        else{
+            int id = (Integer) residenciasTable.getValueAt(linhaSelecionada, 0);
+            new ResidenciaShow(id).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -178,6 +197,6 @@ public class ResidenciaIndex extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable residenciasTable;
     // End of variables declaration//GEN-END:variables
 }

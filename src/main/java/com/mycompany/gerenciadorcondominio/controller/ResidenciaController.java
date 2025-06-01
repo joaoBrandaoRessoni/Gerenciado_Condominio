@@ -89,14 +89,37 @@ public class ResidenciaController {
         return residencia;
     }
 
-    public List<PessoaModal> showMoradores(int idResidencia) throws SQLException {
+    public JTable showMoradores(int idResidencia, JTable jTable) throws SQLException {
         //Busca as pessoas que moram na casa
         String sql = "SELECT p.* FROM pessoas AS p "
                 + "JOIN morador_residencia ON id_pessoa = p.id "
                 + "WHERE id_residencia = ?";
-        List<Object> params = new ArrayList();
-        params.add(idResidencia);
-        return DAO.runExecuteQuery(sql, params, "PessoaModal");
+        ResultSet moradores = DAO.runExecuteQuery(sql, new ArrayList<>());
+        
+        int rows = 0;
+
+        if (moradores.last()) {
+            rows = moradores.getRow();
+            moradores.beforeFirst();
+        }
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
+        dtm.setRowCount(rows);
+        jTable.setModel(dtm);
+
+        int posicaoLinha = 0;
+
+        while (moradores.next()) {
+            jTable.setValueAt(moradores.getString("nome"), posicaoLinha, 0);
+            jTable.setValueAt(moradores.getString("cpf"), posicaoLinha, 1);
+            jTable.setValueAt(moradores.getString("cpf"), posicaoLinha, 2);
+            
+            posicaoLinha++;
+        }
+
+        moradores.close();
+
+        return jTable;
     }
 
     public int alterarProprietario(int idNovoProprietario, int idResidencia) throws SQLException {
