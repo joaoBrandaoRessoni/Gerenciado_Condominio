@@ -55,6 +55,11 @@ public class PessoaController {
 
         return jTable;
     }
+    
+    public List<ResidenciaModal> showAllResidencias() throws SQLException{
+        String sql = "SELECT * FROM residencias";
+        return DAO.runExecuteQuery(sql, new ArrayList<>(), "ResidenciaModal");
+    }
 
     public PessoaModal showProprietario(int idPessoa) throws SQLException {
         //Busca a pessoa
