@@ -12,7 +12,7 @@ import javax.swing.JFrame;
  * @author Maria Luiza
  */
 public class PessoaIndex extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form ResidenciaShow
      */

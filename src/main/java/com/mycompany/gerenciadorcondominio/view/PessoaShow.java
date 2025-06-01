@@ -6,18 +6,37 @@ package com.mycompany.gerenciadorcondominio.view;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Maria Luiza
  */
 public class PessoaShow extends javax.swing.JFrame {
+    private JLabel moradorNome;
+    private JLabel moradorDtNascimento;
+    private JLabel moradorCpf;
+    private JLabel moradorRg;
+    private JLabel residenciaRua;
+    private JLabel residenciaNumero;
+    private JLabel residenciaResponsavel;
+    private JLabel residenciaCep;
 
-    /**
-     * Creates new form ResidenciaShow
-     */
+
     public PessoaShow() {
         initComponents();
+        
+        // dados da pessoa
+        moradorNome.setText("");
+        moradorDtNascimento.setText("");
+        moradorCpf.setText("");
+        moradorRg.setText("");
+        
+        // dados da residencia atual
+        residenciaRua.setText("");
+        residenciaNumero.setText("");
+        residenciaResponsavel.setText("");
+        residenciaCep.setText("");
     }
 
     /**
@@ -165,10 +184,11 @@ public class PessoaShow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setName("residenciasProprietarioTable"); // NOI18N
         jScrollPane1.setViewportView(jTable1);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel15.setText("Residência que é proprietário");
+        jLabel15.setText("Residências que é proprietário");
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel16.setText("Residência atual");
@@ -235,9 +255,9 @@ public class PessoaShow extends javax.swing.JFrame {
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,13 +271,14 @@ public class PessoaShow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel16)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel16)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)))
                 .addGap(0, 47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -318,6 +339,8 @@ public class PessoaShow extends javax.swing.JFrame {
                 frame.setBackground(new Color(30, 144, 255));
                 frame.setSize(800, 600);
                 frame.setVisible(true);
+                
+                
             }
         });
     }

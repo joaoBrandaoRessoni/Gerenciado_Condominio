@@ -6,18 +6,38 @@ package com.mycompany.gerenciadorcondominio.view;
 
 import java.awt.Color;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Maria Luiza
  */
 public class ResidenciaShow extends javax.swing.JFrame {
+    private JLabel residenciaStatusTxt;
+    private JLabel proprietarioNomeTxt;
+    private JLabel proprietarioCpfTxt;
+    private JLabel enderecoRuaTxt;
+    private JLabel enderecoNumeroTxt;
+    private JLabel enderecoCepTxt;
+
 
     /**
      * Creates new form ResidenciaShow
      */
     public ResidenciaShow() {
         initComponents();
+        
+        // dados da residência
+        residenciaStatusTxt.setText("");
+        
+        // dados do proprietário da residência
+        proprietarioNomeTxt.setText("");
+        proprietarioCpfTxt.setText("");
+        
+        // dados do endereço da residência
+        enderecoRuaTxt.setText("");
+        enderecoNumeroTxt.setText("");
+        enderecoCepTxt.setText("");
     }
 
     /**
@@ -266,6 +286,8 @@ public class ResidenciaShow extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        new ResidenciaEdit().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
