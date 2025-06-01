@@ -22,11 +22,10 @@ import javax.swing.table.DefaultTableModel;
 public class PessoaController {
 
     public JTable index(JTable jTable) throws SQLException {
-        String sql = "SELECT p.*, count(*) as casas, pp.nome as proprietario\n"
+        String sql = "SELECT p.*, count(*) as casas\n"
                 + "FROM pessoas p\n"
                 + "JOIN morador_residencia mr ON p.id = mr.id_pessoa\n"
                 + "JOIN residencias r ON r.id = mr.id\n"
-                + "JOIN pessoas AS pp ON r.id_proprietario = pp.id\n"
                 + "GROUP BY p.id;";
         ResultSet pessoas = DAO.runExecuteQuery(sql, new ArrayList<>());
 
@@ -48,7 +47,6 @@ public class PessoaController {
             jTable.setValueAt(pessoas.getString("nome"), posicaoLinha, 1);
             jTable.setValueAt(pessoas.getString("cpf"), posicaoLinha, 2);
             jTable.setValueAt(pessoas.getInt("casas"), posicaoLinha, 3);
-            jTable.setValueAt(pessoas.getString("proprietario"), posicaoLinha, 4);
             posicaoLinha++;
         }
         
@@ -77,13 +75,36 @@ public class PessoaController {
         return pessoa;
     }
 
-    public List<ResidenciaModal> showPropriedades(int idPessoa) throws SQLException {
+    public JTable showPropriedades(int idPessoa, JTable jTable) throws SQLException {
         //Buscas as propriedades
         String sql = "SELECT * FROM residencias WHERE id_proprietario = ?";
-        List<Object> params = new ArrayList();
-        params.add(idPessoa);
 
-        return DAO.runExecuteQuery(sql, params, "ResidenciaModal");
+        ResultSet propriedades = DAO.runExecuteQuery(sql, new ArrayList<>());
+        
+        int rows = 0;
+
+        if (propriedades.last()) {
+            rows = propriedades.getRow();
+            propriedades.beforeFirst();
+        }
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
+        dtm.setRowCount(rows);
+        jTable.setModel(dtm);
+
+        int posicaoLinha = 0;
+        
+        while(propriedades.next()){
+            jTable.setValueAt(propriedades.getString("rua"), posicaoLinha, 0);
+            jTable.setValueAt(propriedades.getInt("numero"), posicaoLinha, 1);
+            jTable.setValueAt(propriedades.getString("cep"), posicaoLinha, 2);
+            jTable.setValueAt(propriedades.getString("cep"), posicaoLinha, 3);
+            posicaoLinha++;
+        }
+        
+        propriedades.close();
+
+        return jTable;
     }
 
     public ResidenciaModal showMoradia(int idPessoa) throws SQLException {

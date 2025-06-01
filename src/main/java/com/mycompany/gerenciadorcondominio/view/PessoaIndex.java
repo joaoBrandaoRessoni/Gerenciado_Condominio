@@ -54,19 +54,19 @@ public class PessoaIndex extends javax.swing.JFrame {
         moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
         moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Nome", "CPF", "Casas", "Responsável"
+                "ID", "Nome", "CPF", "Casas"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -136,6 +136,15 @@ public class PessoaIndex extends javax.swing.JFrame {
 
     private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
         // TODO add your handling code here:
+        int linhaSelecionada = moradoresTable.getSelectedRow();
+        if(linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(rootPane, "Selecione um morador para visualizar");
+        }
+        else{
+            int id = (Integer) moradoresTable.getValueAt(linhaSelecionada, 0);
+            new PessoaShow(id).setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_visualizarBtnActionPerformed
 
     private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed

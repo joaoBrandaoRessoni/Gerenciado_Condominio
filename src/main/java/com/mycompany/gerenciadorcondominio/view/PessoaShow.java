@@ -4,9 +4,14 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
+import com.mycompany.gerenciadorcondominio.model.PessoaModal;
+import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,22 +26,36 @@ public class PessoaShow extends javax.swing.JFrame {
     private JLabel residenciaNumero;
     private JLabel residenciaResponsavel;
     private JLabel residenciaCep;
+    
+    PessoaController pessoaController = new PessoaController();
 
 
-    public PessoaShow() {
+    public PessoaShow(int id) {
         initComponents();
-        
-        // dados da pessoa
-        moradorNome.setText("");
-        moradorDtNascimento.setText("");
-        moradorCpf.setText("");
-        moradorRg.setText("");
-        
-        // dados da residencia atual
-        residenciaRua.setText("");
-        residenciaNumero.setText("");
-        residenciaResponsavel.setText("");
-        residenciaCep.setText("");
+        try{
+            PessoaModal pessoa = pessoaController.showProprietario(id);
+             
+            // dados da pessoa
+            moradorNome.setText(pessoa.getNome());
+            moradorDtNascimento.setText(pessoa.getDt_nasc());
+            moradorCpf.setText(pessoa.getCpf());
+            moradorRg.setText(pessoa.getRg());
+            
+            ResidenciaModal residencia = pessoaController.showMoradia(id);
+
+            // dados da residencia atual
+            residenciaRua.setText(residencia.getLogradouro());
+            residenciaNumero.setText(String.valueOf(residencia.getNumero()));
+            String nomeProprietario = pessoaController.showProprietario(residencia.getId_proprietario()).getNome();
+            residenciaResponsavel.setText(nomeProprietario);
+            residenciaCep.setText(residencia.getCep());
+            
+            // dados das residências que ele é proprietário
+            pessoaController.showPropriedades(id, residenciaProprietarioTable);
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
     }
 
     /**
@@ -59,7 +78,7 @@ public class PessoaShow extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        residenciaProprietarioTable = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -158,8 +177,8 @@ public class PessoaShow extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        residenciaProprietarioTable.setBackground(new java.awt.Color(204, 204, 255));
+        residenciaProprietarioTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -184,8 +203,8 @@ public class PessoaShow extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setName("residenciasProprietarioTable"); // NOI18N
-        jScrollPane1.setViewportView(jTable1);
+        residenciaProprietarioTable.setName("residenciasProprietarioTable"); // NOI18N
+        jScrollPane1.setViewportView(residenciaProprietarioTable);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel15.setText("Residências que é proprietário");
@@ -335,7 +354,7 @@ public class PessoaShow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new PessoaShow();
+                JFrame frame = new PessoaShow(1);
                 frame.setBackground(new Color(30, 144, 255));
                 frame.setSize(800, 600);
                 frame.setVisible(true);
@@ -368,6 +387,6 @@ public class PessoaShow extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable residenciaProprietarioTable;
     // End of variables declaration//GEN-END:variables
 }
