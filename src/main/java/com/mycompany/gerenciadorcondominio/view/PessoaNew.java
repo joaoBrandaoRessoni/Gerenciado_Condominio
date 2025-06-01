@@ -4,39 +4,50 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
+import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
+import com.mycompany.gerenciadorcondominio.model.PessoaModal;
+import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class PessoaNew extends javax.swing.JFrame {
-    private JLabel moradorNome;
-    private JLabel moradorDtNascimento;
-    private JLabel moradorCpf;
-    private JLabel moradorRg;
-    private JLabel residenciaRua;
-    private JLabel residenciaNumero;
-    private JLabel residenciaResponsavel;
-    private JLabel residenciaCep;
-
+    private JLabel moradorNomeField;
+    private JLabel moradorDtNascimentoField;
+    private JLabel moradorCpfField;
+    private JLabel moradorRgField;
+    private JComboBox residenciaAtualSelect;
+    PessoaController pessoaController = new PessoaController();
 
     public PessoaNew() {
         initComponents();
         
-        // dados da pessoa
-        moradorNome.setText("");
-        moradorDtNascimento.setText("");
-        moradorCpf.setText("");
-        moradorRg.setText("");
-        
         // dados da residencia atual
-        residenciaRua.setText("");
-        residenciaNumero.setText("");
-        residenciaResponsavel.setText("");
-        residenciaCep.setText("");
+        String residenciaTexto;
+        
+        try{
+            List<ResidenciaModal> residencias = new ResidenciaController().index();
+            for(ResidenciaModal residencia : residencias){
+                residenciaTexto = residencia.getId() + " - " + residencia.getLogradouro() + ", Nº" + residencia.getNumero(); 
+                residenciaAtualSelect.addItem(residenciaTexto);
+            }
+        }
+        catch(SQLException e){
+            System.err.println("Não foi possível conectar com o banco de dados");
+        }
     }
 
     /**
@@ -232,9 +243,37 @@ public class PessoaNew extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // cadastrar
-        new PessoaIndex().setVisible(true);
-        this.dispose();
+        // botão de cadastrar
+       
+        // dados da pessoa
+        String nome = moradorNomeField.getText();
+        String dtNascimentoString = moradorDtNascimentoField.getText();                    
+        String cpf = moradorCpfField.getText();
+        String rg = moradorRgField.getText();
+
+        try{
+            java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
+            Date dtNascimento = new Date(utilDate.getTime());
+
+            // adicionar novo registro de pessoa
+            try{
+                if(pessoaController.inserir(new PessoaModal(1, nome, dtNascimento, cpf, rg)) == 1){
+                    JOptionPane.showMessageDialog(rootPane, nome + " cadastrado(a)!");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar o morador " + nome);
+                }
+            }
+            catch(SQLException e){
+                System.err.println("Erro ao conectar com o banco de dados ou ao cadastrar usuário");
+            }
+
+            // voltar para o index
+            new PessoaIndex().setVisible(true);
+            this.dispose();
+        }
+        catch(ParseException e){
+            System.err.println("Data inválida");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
