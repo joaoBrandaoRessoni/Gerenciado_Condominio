@@ -31,7 +31,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jComboBox1" max="32767" attributes="0"/>
+                          <Component id="residenciaAtualComboBox" max="32767" attributes="0"/>
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                           <Component id="jPanel2" max="32767" attributes="0"/>
@@ -58,7 +58,7 @@
               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
               <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jComboBox1" min="-2" pref="54" max="-2" attributes="0"/>
+              <Component id="residenciaAtualComboBox" min="-2" pref="54" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="194" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton1" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
@@ -102,16 +102,16 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jFormattedTextField3" min="-2" pref="173" max="-2" attributes="0"/>
+                                  <Component id="moradorCpfField" min="-2" pref="173" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="285" max="-2" attributes="0"/>
-                                  <Component id="jFormattedTextField2" min="-2" pref="171" max="-2" attributes="0"/>
+                                  <Component id="moradorRgField" min="-2" pref="171" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="0" pref="92" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextField1" alignment="0" min="-2" pref="446" max="-2" attributes="0"/>
+                              <Component id="moradorNomeField" alignment="0" min="-2" pref="446" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -123,7 +123,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jFormattedTextField1" min="-2" pref="171" max="-2" attributes="0"/>
+                                      <Component id="moradorDtNascimentoField" min="-2" pref="171" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
@@ -143,8 +143,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jTextField1" pref="30" max="32767" attributes="0"/>
-                      <Component id="jFormattedTextField1" max="32767" attributes="0"/>
+                      <Component id="moradorNomeField" pref="30" max="32767" attributes="0"/>
+                      <Component id="moradorDtNascimentoField" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -153,8 +153,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jFormattedTextField2" pref="27" max="32767" attributes="0"/>
-                      <Component id="jFormattedTextField3" max="32767" attributes="0"/>
+                      <Component id="moradorRgField" pref="27" max="32767" attributes="0"/>
+                      <Component id="moradorCpfField" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="21" max="32767" attributes="0"/>
               </Group>
@@ -194,13 +194,13 @@
             <Property name="text" type="java.lang.String" value="Data de nascimento"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="moradorNomeField">
           <Properties>
             <Property name="text" type="java.lang.String" value="Joaquim da Silva"/>
             <Property name="name" type="java.lang.String" value="moradorNomeField" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
+        <Component class="javax.swing.JFormattedTextField" name="moradorDtNascimentoField">
           <Properties>
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
               <Format subtype="1" type="1"/>
@@ -209,7 +209,7 @@
             <Property name="name" type="java.lang.String" value="moradorDtNascimentoField" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField2">
+        <Component class="javax.swing.JFormattedTextField" name="moradorRgField">
           <Properties>
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
               <Format format="##.###.###-#" subtype="-1" type="5"/>
@@ -218,7 +218,7 @@
             <Property name="name" type="java.lang.String" value="moradorRgField" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField3">
+        <Component class="javax.swing.JFormattedTextField" name="moradorCpfField">
           <Properties>
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
               <Format format="###.###.###-##" subtype="-1" type="5"/>
@@ -237,7 +237,7 @@
         <Property name="text" type="java.lang.String" value="Resid&#xea;ncia atual"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBox1">
+    <Component class="javax.swing.JComboBox" name="residenciaAtualComboBox">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="cc" red="cc" type="rgb"/>

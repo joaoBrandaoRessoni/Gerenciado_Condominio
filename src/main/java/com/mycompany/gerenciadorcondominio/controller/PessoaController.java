@@ -44,10 +44,11 @@ public class PessoaController {
         int posicaoLinha = 0;
         
         while(pessoas.next()){
-            jTable.setValueAt(pessoas.getString("nome"), posicaoLinha, 0);
-            jTable.setValueAt(pessoas.getString("cpf"), posicaoLinha, 1);
-            jTable.setValueAt(pessoas.getInt("casas"), posicaoLinha, 2);
-            jTable.setValueAt(pessoas.getString("proprietario"), posicaoLinha, 3);
+            jTable.setValueAt(pessoas.getInt("id"), posicaoLinha, 0);
+            jTable.setValueAt(pessoas.getString("nome"), posicaoLinha, 1);
+            jTable.setValueAt(pessoas.getString("cpf"), posicaoLinha, 2);
+            jTable.setValueAt(pessoas.getInt("casas"), posicaoLinha, 3);
+            jTable.setValueAt(pessoas.getString("proprietario"), posicaoLinha, 4);
             posicaoLinha++;
         }
         

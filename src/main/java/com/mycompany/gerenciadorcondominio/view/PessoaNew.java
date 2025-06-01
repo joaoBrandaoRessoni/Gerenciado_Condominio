@@ -13,11 +13,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,11 +22,7 @@ import javax.swing.JOptionPane;
  * @author Maria Luiza
  */
 public class PessoaNew extends javax.swing.JFrame {
-    private JLabel moradorNomeField;
-    private JLabel moradorDtNascimentoField;
-    private JLabel moradorCpfField;
-    private JLabel moradorRgField;
-    private JComboBox residenciaAtualSelect;
+
     PessoaController pessoaController = new PessoaController();
 
     public PessoaNew() {
@@ -42,7 +35,7 @@ public class PessoaNew extends javax.swing.JFrame {
             List<ResidenciaModal> residencias = new ResidenciaController().index();
             for(ResidenciaModal residencia : residencias){
                 residenciaTexto = residencia.getId() + " - " + residencia.getLogradouro() + ", Nº" + residencia.getNumero(); 
-                residenciaAtualSelect.addItem(residenciaTexto);
+                residenciaAtualComboBox.addItem(residenciaTexto);
             }
         }
         catch(SQLException e){
@@ -65,12 +58,12 @@ public class PessoaNew extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        moradorNomeField = new javax.swing.JTextField();
+        moradorDtNascimentoField = new javax.swing.JFormattedTextField();
+        moradorRgField = new javax.swing.JFormattedTextField();
+        moradorCpfField = new javax.swing.JFormattedTextField();
         jLabel16 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        residenciaAtualComboBox = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
@@ -97,28 +90,28 @@ public class PessoaNew extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Data de nascimento");
 
-        jTextField1.setText("Joaquim da Silva");
-        jTextField1.setName("moradorNomeField"); // NOI18N
+        moradorNomeField.setText("Joaquim da Silva");
+        moradorNomeField.setName("moradorNomeField"); // NOI18N
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        jFormattedTextField1.setText("10012001");
-        jFormattedTextField1.setName("moradorDtNascimentoField"); // NOI18N
+        moradorDtNascimentoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        moradorDtNascimentoField.setText("10012001");
+        moradorDtNascimentoField.setName("moradorDtNascimentoField"); // NOI18N
 
         try {
-            jFormattedTextField2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
+            moradorRgField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField2.setText("12.123.123-1 ");
-        jFormattedTextField2.setName("moradorRgField"); // NOI18N
+        moradorRgField.setText("12.123.123-1 ");
+        moradorRgField.setName("moradorRgField"); // NOI18N
 
         try {
-            jFormattedTextField3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+            moradorCpfField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField3.setText("123.123.123-12");
-        jFormattedTextField3.setName("moradorCpfField"); // NOI18N
+        moradorCpfField.setText("123.123.123-12");
+        moradorCpfField.setName("moradorCpfField"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -131,13 +124,13 @@ public class PessoaNew extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(moradorCpfField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(285, 285, 285)
-                                .addComponent(jFormattedTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(moradorRgField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 92, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(moradorNomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +140,7 @@ public class PessoaNew extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel11)
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(moradorDtNascimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -159,25 +152,25 @@ public class PessoaNew extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField1))
+                    .addComponent(moradorNomeField, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(moradorDtNascimentoField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jFormattedTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField3))
+                    .addComponent(moradorRgField, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                    .addComponent(moradorCpfField))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel16.setText("Residência atual");
 
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residências" }));
-        jComboBox1.setName("residenciaAtualSelect"); // NOI18N
+        residenciaAtualComboBox.setBackground(new java.awt.Color(204, 204, 255));
+        residenciaAtualComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residências" }));
+        residenciaAtualComboBox.setName("residenciaAtualSelect"); // NOI18N
 
         jButton2.setBackground(new java.awt.Color(204, 204, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -210,7 +203,7 @@ public class PessoaNew extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(residenciaAtualComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel16)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -231,7 +224,7 @@ public class PessoaNew extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(residenciaAtualComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(194, 194, 194)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -257,22 +250,22 @@ public class PessoaNew extends javax.swing.JFrame {
 
             // adicionar novo registro de pessoa
             try{
-                if(pessoaController.inserir(new PessoaModal(1, nome, dtNascimento, cpf, rg)) == 1){
+                if(pessoaController.inserir(nome, dtNascimento, cpf, rg) == 1){
                     JOptionPane.showMessageDialog(rootPane, nome + " cadastrado(a)!");
+                    
+                    // voltar para o index
+                    new PessoaIndex().setVisible(true);
+                    this.dispose();
                 }else{
                     JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar o morador " + nome);
                 }
             }
             catch(SQLException e){
-                System.err.println("Erro ao conectar com o banco de dados ou ao cadastrar usuário");
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados ou ao cadastrar morador");
             }
-
-            // voltar para o index
-            new PessoaIndex().setVisible(true);
-            this.dispose();
         }
         catch(ParseException e){
-            System.err.println("Data inválida");
+            JOptionPane.showMessageDialog(rootPane, "Data inválida. Formato correto: xx/xx/xxxx");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -332,10 +325,6 @@ public class PessoaNew extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -343,6 +332,10 @@ public class PessoaNew extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JFormattedTextField moradorCpfField;
+    private javax.swing.JFormattedTextField moradorDtNascimentoField;
+    private javax.swing.JTextField moradorNomeField;
+    private javax.swing.JFormattedTextField moradorRgField;
+    private javax.swing.JComboBox<String> residenciaAtualComboBox;
     // End of variables declaration//GEN-END:variables
 }
