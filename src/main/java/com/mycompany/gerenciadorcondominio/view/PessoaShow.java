@@ -29,8 +29,8 @@ public class PessoaShow extends javax.swing.JFrame {
     
     PessoaController pessoaController = new PessoaController();
 
-
     public PessoaShow(int id) {
+        screenConfigs();
         initComponents();
         try{
             PessoaModal pessoa = pessoaController.showProprietario(id);
@@ -58,6 +58,14 @@ public class PessoaShow extends javax.swing.JFrame {
         }
     }
 
+    private void screenConfigs() {
+        this.setBackground(new Color(30, 144, 255));
+        this.setSize(950, 700);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -354,12 +362,7 @@ public class PessoaShow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new PessoaShow(1);
-                frame.setBackground(new Color(30, 144, 255));
-                frame.setSize(800, 600);
-                frame.setVisible(true);
-                
-                
+                new PessoaShow(1).setVisible(true);
             }
         });
     }

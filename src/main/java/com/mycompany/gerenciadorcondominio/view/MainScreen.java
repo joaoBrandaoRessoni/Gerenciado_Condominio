@@ -4,38 +4,29 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
-import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import java.awt.Color;
-import java.sql.SQLException;
+import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
-public class PessoaIndex extends javax.swing.JFrame {
-    PessoaController pessoaController = new PessoaController();
+public class MainScreen extends javax.swing.JFrame {
+
     /**
      * Creates new form ResidenciaShow
      */
-    public PessoaIndex() {
+    public MainScreen() {
         screenConfigs();
         initComponents();
-        
-        try{        
-            pessoaController.index(moradoresTable);
-        }
-        catch(SQLException e){
-            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
-        }
     }
     
     private void screenConfigs() {
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -51,20 +42,14 @@ public class PessoaIndex extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        pessoaBtn = new javax.swing.JButton();
+        personBtn = new javax.swing.JButton();
         houseBtn = new javax.swing.JButton();
         paymentBtn = new javax.swing.JButton();
         logoutBtn = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        moradoresTable = new javax.swing.JTable();
-        visualizarBtn = new javax.swing.JButton();
-        cadastrarBtn = new javax.swing.JButton();
-        jTable1 = new javax.swing.JTable();
-        jButton7 = new javax.swing.JButton();
+        jTextPane1 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -74,11 +59,11 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel3.setText("Bem Vindo(a)!");
 
-        pessoaBtn.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        pessoaBtn.setText("PESSOAS");
-        pessoaBtn.addActionListener(new java.awt.event.ActionListener() {
+        personBtn.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        personBtn.setText("PESSOAS");
+        personBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pessoaBtnActionPerformed(evt);
+                personBtnActionPerformed(evt);
             }
         });
 
@@ -115,7 +100,7 @@ public class PessoaIndex extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(83, Short.MAX_VALUE))
-            .addComponent(pessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(personBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(houseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(paymentBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(logoutBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -126,12 +111,12 @@ public class PessoaIndex extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel3)
                 .addGap(38, 38, 38)
-                .addComponent(pessoaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(personBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(houseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(paymentBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -147,7 +132,7 @@ public class PessoaIndex extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(310, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,108 +142,38 @@ public class PessoaIndex extends javax.swing.JFrame {
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setText("Pessoas");
-
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton6.setText("Visualizar");
-        jButton6.setName("visualizarBtn"); // NOI18N
-
-        moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
-        moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ID", "Nome", "CPF", "Casas"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(moradoresTable);
-
-        visualizarBtn.setBackground(new java.awt.Color(204, 204, 255));
-        visualizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        visualizarBtn.setText("Visualizar");
-        visualizarBtn.setName("visualizarBtn"); // NOI18N
-        visualizarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                visualizarBtnActionPerformed(evt);
-            }
-        });
-
-
-        cadastrarBtn.setBackground(new java.awt.Color(204, 204, 255));
-        cadastrarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        cadastrarBtn.setText("Cadastrar");
-        cadastrarBtn.setName("cadastrarBtn"); // NOI18N
-        cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastrarBtnActionPerformed(evt);
-            }
-        });
-
-        jButton7.setBackground(new java.awt.Color(204, 204, 255));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton7.setText("Cadastrar");
-        jButton7.setName("visualizarBtn"); // NOI18N
+        jTextPane1.setBackground(new java.awt.Color(242, 242, 242));
+        jTextPane1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jTextPane1.setText("No sistema de gerenciamento de condomínio, é possível realizar o controle completo das casas, cadastrando e atualizando informações das unidades; gerenciar pessoas, incluindo proprietários e moradores, mantendo um registro detalhado de cada um; além de administrar as mensalidades, com funcionalidades para lançar cobranças, acompanhar pagamentos e controlar a inadimplência.  ");
+        jTextPane1.setDisabledTextColor(new java.awt.Color(242, 242, 242));
+        jScrollPane1.setViewportView(jTextPane1);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(jButton7)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton6))
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(638, 638, 638)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
-
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -278,42 +193,22 @@ public class PessoaIndex extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
-        // TODO add your handling code here:
-        int linhaSelecionada = moradoresTable.getSelectedRow();
-        if(linhaSelecionada == -1){
-            JOptionPane.showMessageDialog(rootPane, "Selecione um morador para visualizar");
-        }
-        else{
-            int id = (Integer) moradoresTable.getValueAt(linhaSelecionada, 0);
-            new PessoaShow(id).setVisible(true);
-            this.dispose();
-        }
-    }//GEN-LAST:event_visualizarBtnActionPerformed
-
-    private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
-        // TODO add your handling code here:
-        new PessoaNew().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_cadastrarBtnActionPerformed
-
-    private void pessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pessoaBtnActionPerformed
-        this.setVisible(false);
+    private void personBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personBtnActionPerformed
         PessoaIndex p = new PessoaIndex();
-    }//GEN-LAST:event_pessoaBtnActionPerformed
+    }//GEN-LAST:event_personBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         System.exit(0);
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void houseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houseBtnActionPerformed
-        this.setVisible(false);
         ResidenciaIndex p = new ResidenciaIndex();
+        p.setVisible(true);
     }//GEN-LAST:event_houseBtnActionPerformed
 
     private void paymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentBtnActionPerformed
-        this.setVisible(false);
         MensalidadeIndex p = new MensalidadeIndex();
+        p.setVisible(true);
     }//GEN-LAST:event_paymentBtnActionPerformed
 
     /**
@@ -333,70 +228,14 @@ public class PessoaIndex extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PessoaIndex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PessoaIndex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PessoaIndex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PessoaIndex.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -409,29 +248,23 @@ public class PessoaIndex extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+                new MainScreen().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-
-    private javax.swing.JButton cadastrarBtn;
     private javax.swing.JButton houseBtn;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable moradoresTable;
-    private javax.swing.JButton visualizarBtn;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JButton logoutBtn;
     private javax.swing.JButton paymentBtn;
-    private javax.swing.JButton pessoaBtn;
+    private javax.swing.JButton personBtn;
     // End of variables declaration//GEN-END:variables
 }

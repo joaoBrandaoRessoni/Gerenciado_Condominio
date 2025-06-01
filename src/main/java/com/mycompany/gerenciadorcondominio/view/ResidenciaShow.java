@@ -24,6 +24,7 @@ public class ResidenciaShow extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public ResidenciaShow(int id) {
+        screenConfigs();
         initComponents();
         this.id = id;
         
@@ -47,6 +48,14 @@ public class ResidenciaShow extends javax.swing.JFrame {
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
         }
+    }
+    
+    private void screenConfigs() {
+        this.setBackground(new Color(30, 144, 255));
+        this.setSize(950, 700);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
     }
 
     /**
@@ -340,10 +349,7 @@ public class ResidenciaShow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new ResidenciaShow(1);
-                frame.setBackground(new Color(30, 144, 255));
-                frame.setSize(800, 600);
-                frame.setVisible(true);
+                new ResidenciaShow(1).setVisible(true);
             }
         });
     }
