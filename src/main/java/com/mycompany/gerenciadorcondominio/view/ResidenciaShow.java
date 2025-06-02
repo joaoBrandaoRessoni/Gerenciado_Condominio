@@ -4,13 +4,18 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
 import com.mycompany.gerenciadorcondominio.model.PessoaModal;
 import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,12 +23,15 @@ import javax.swing.JOptionPane;
  */
 public class ResidenciaShow extends javax.swing.JFrame {
     ResidenciaController residenciaController = new ResidenciaController();
+    PessoaController pessoaController = new PessoaController();
+    Map<String, Integer> mapaNomeId = new HashMap<>();
     private int id;
 
     /**
      * Creates new form ResidenciaShow
      */
     public ResidenciaShow(int id) {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
         this.id = id;
@@ -32,18 +40,29 @@ public class ResidenciaShow extends javax.swing.JFrame {
             // dados do endereço da residência
             ResidenciaModal residencia = residenciaController.showResidencia(id);
 
-            enderecoRuaTxt.setText(residencia.getLogradouro());
-            enderecoNumeroTxt.setText(String.valueOf(residencia.getNumero()));
-            enderecoCepTxt.setText(residencia.getCep());
+            ruaField.setText(residencia.getLogradouro());
+            numeroField.setText(String.valueOf(residencia.getNumero()));
+            cepField.setText(residencia.getCep());
             
             // dados do proprietário da residência
             PessoaModal pessoa = residenciaController.showProprietario(id);
             
-            proprietarioNomeTxt.setText(pessoa.getNome());
-            proprietarioCpfTxt.setText(pessoa.getCpf());
+            List<PessoaModal> people = pessoaController.indexPessoa();
+
+            people.forEach(proprietario -> {
+                pessoasBox.addItem(proprietario.getNome() + " - " + proprietario.getCpf());  
+                mapaNomeId.put(proprietario.getNome() + " - " + proprietario.getCpf(), proprietario.getId());  // associa nome -> id
+            });
+            String itemSelecionado = pessoa.getNome() + " - " + pessoa.getCpf();
+            pessoasBox.setSelectedItem(itemSelecionado);
+            people.forEach(morador -> {
+                moradoresBox.addItem(morador.getNome() + " - " + morador.getCpf());  
+                mapaNomeId.put(morador.getNome() + " - " + morador.getCpf(), morador.getId());  // associa nome -> id
+            });
+            moradoresBox.setSelectedItem(null);
             
             // dados dos moradoeres da residência
-            residenciaController.showMoradores(id, moradoresTable);
+            moradoresTable = residenciaController.showMoradores(id, moradoresTable).table;
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -54,7 +73,6 @@ public class ResidenciaShow extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -70,22 +88,22 @@ public class ResidenciaShow extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        proprietarioNomeTxt = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        proprietarioCpfTxt = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        enderecoRuaTxt = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        enderecoNumeroTxt = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        enderecoCepTxt = new javax.swing.JLabel();
+        ruaField = new javax.swing.JTextField();
+        numeroField = new javax.swing.JTextField();
+        cepField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         moradoresTable = new javax.swing.JTable();
         editarBtn = new javax.swing.JButton();
-        verMensalidadesBtn = new javax.swing.JButton();
+        editarBtn1 = new javax.swing.JButton();
+        moradoresBox = new javax.swing.JComboBox<>();
+        pessoasBox = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        removerBtn = new javax.swing.JButton();
+        excluirBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -99,53 +117,6 @@ public class ResidenciaShow extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setText("Moradores");
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        proprietarioNomeTxt.setText("Joaquim da Silva");
-        proprietarioNomeTxt.setName("proprietarioNomeTxt"); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setText("CPF");
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel8.setText("Nome");
-
-        proprietarioCpfTxt.setText("12312312387");
-        proprietarioCpfTxt.setName("proprietarioCpfTxt"); // NOI18N
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(proprietarioNomeTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(39, 39, 39))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(proprietarioCpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(proprietarioNomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(proprietarioCpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
-        );
-
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setToolTipText("");
@@ -154,20 +125,11 @@ public class ResidenciaShow extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Número");
 
-        enderecoRuaTxt.setText("Avenida das Flores");
-        enderecoRuaTxt.setName("enderecoRuaTxt"); // NOI18N
-
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("CEP");
 
-        enderecoNumeroTxt.setText("23");
-        enderecoNumeroTxt.setName("enderecoNumeroTxt"); // NOI18N
-
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Rua");
-
-        enderecoCepTxt.setText("12123123");
-        enderecoCepTxt.setName("enderecoCepTxt"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -180,18 +142,18 @@ public class ResidenciaShow extends javax.swing.JFrame {
                         .addComponent(jLabel12)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(enderecoRuaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(168, 168, 168))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(enderecoNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(enderecoCepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(130, 130, 130))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ruaField, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(numeroField, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cepField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(19, 19, 19))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,34 +161,34 @@ public class ResidenciaShow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enderecoRuaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ruaField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enderecoNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(enderecoCepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(numeroField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cepField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
         moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Nome", "CPF", "Responsável"
+                "Nome", "CPF"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -249,13 +211,51 @@ public class ResidenciaShow extends javax.swing.JFrame {
             }
         });
 
-        verMensalidadesBtn.setBackground(new java.awt.Color(204, 204, 255));
-        verMensalidadesBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        verMensalidadesBtn.setText("Ver mensalidades");
-        verMensalidadesBtn.setName("editarBtn"); // NOI18N
-        verMensalidadesBtn.addActionListener(new java.awt.event.ActionListener() {
+        editarBtn1.setBackground(new java.awt.Color(204, 204, 255));
+        editarBtn1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        editarBtn1.setText("Cancelar");
+        editarBtn1.setName("editarBtn"); // NOI18N
+        editarBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verMensalidadesBtnActionPerformed(evt);
+                editarBtn1ActionPerformed(evt);
+            }
+        });
+
+        moradoresBox.setBackground(new java.awt.Color(204, 204, 255));
+        moradoresBox.setToolTipText("Selecione uma pessoa...");
+        moradoresBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moradoresBoxActionPerformed(evt);
+            }
+        });
+
+        pessoasBox.setBackground(new java.awt.Color(204, 204, 255));
+        pessoasBox.setToolTipText("Selecione uma pessoa...");
+        pessoasBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pessoasBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Adicionar morador");
+
+        removerBtn.setBackground(new java.awt.Color(204, 204, 255));
+        removerBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        removerBtn.setText("Remover");
+        removerBtn.setName("editarBtn"); // NOI18N
+        removerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerBtnActionPerformed(evt);
+            }
+        });
+
+        excluirBtn.setBackground(new java.awt.Color(204, 204, 255));
+        excluirBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        excluirBtn.setText("Excluir");
+        excluirBtn.setName("editarBtn"); // NOI18N
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBtnActionPerformed(evt);
             }
         });
 
@@ -263,61 +263,187 @@ public class ResidenciaShow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(217, 217, 217)
+                .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69)
+                .addComponent(editarBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(verMensalidadesBtn))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                        .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(19, 19, 19))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(moradoresBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addGap(621, 621, 621))
+                            .addComponent(pessoasBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(removerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(verMensalidadesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pessoasBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(editarBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(49, 49, 49))
+                        .addComponent(moradoresBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(removerBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(92, 92, 92)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editarBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
-        // TODO add your handling code here:
-        new ResidenciaEdit(id).setVisible(true);
-        this.dispose();
+        String rua = ruaField.getText();
+        int numero = Integer.parseInt(numeroField.getText());
+        String cep = cepField.getText();
+        
+        int idProprietario = -1;
+        String nomeSelecionado = (String) pessoasBox.getSelectedItem();
+        if (nomeSelecionado != null) {
+            idProprietario = mapaNomeId.getOrDefault(nomeSelecionado, -1);
+        }
+        
+        try {
+            residenciaController.updateResidencia(numero, cep, rua, id);
+            residenciaController.alterarProprietario(idProprietario, id);
+            JOptionPane.showMessageDialog(null, "Residência atualizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar residência: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        new ResidenciaIndex();
+        this.setVisible(false);
     }//GEN-LAST:event_editarBtnActionPerformed
 
-    private void verMensalidadesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verMensalidadesBtnActionPerformed
-        // botão de ver mensalidades
-        new MensalidadeShow(id).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_verMensalidadesBtnActionPerformed
+    private void editarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtn1ActionPerformed
+        new ResidenciaIndex();
+        this.setVisible(false);
+    }//GEN-LAST:event_editarBtn1ActionPerformed
+
+    private void moradoresBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moradoresBoxActionPerformed
+        try {
+            List<PessoaModal> people = pessoaController.indexPessoa();
+            
+            String selecionado = (String) moradoresBox.getSelectedItem();
+            if (selecionado != null && !selecionado.isEmpty()) {
+                int idMorador = mapaNomeId.getOrDefault(selecionado, -1);
+
+                DefaultTableModel model = (DefaultTableModel) moradoresTable.getModel();
+                String[] partes = selecionado.split(" - ");
+                String nome = partes[0];
+                String cpf = partes.length > 1 ? partes[1] : "";
+
+                model.addRow(new Object[]{nome, cpf});
+                residenciaController.adicionarMorador(idMorador, id);
+            }
+            
+        } catch(SQLException e) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao buscar moradores");
+        }
+    }//GEN-LAST:event_moradoresBoxActionPerformed
+
+    private void pessoasBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pessoasBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pessoasBoxActionPerformed
+
+    private void removerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBtnActionPerformed
+        int row = moradoresTable.getSelectedRow();
+        
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione um morador para continuar", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                List<Integer> ids = residenciaController.showMoradores(id, moradoresTable).ids;
+                int idMorador = ids.get(row);
+
+                int resposta = JOptionPane.showConfirmDialog(
+                    null,
+                    "Você deseja continuar?",
+                    "Confirmação",
+                    JOptionPane.YES_NO_OPTION
+                );
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    residenciaController.removerMorador(idMorador, id);
+                } else {
+                    return;
+                }
+                
+                new ResidenciaIndex();
+                this.setVisible(false);
+                
+            } catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            }
+        } 
+    }//GEN-LAST:event_removerBtnActionPerformed
+
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        int resposta = JOptionPane.showConfirmDialog(
+            null,
+            "Você deseja continuar?",
+            "Confirmação",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+         try {
+            if (resposta == JOptionPane.YES_OPTION) {
+                residenciaController.deleteResidencia(id);
+            } else {
+                return;
+            }
+
+            new ResidenciaIndex();
+            this.setVisible(false);
+        } catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
+    }//GEN-LAST:event_excluirBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -355,10 +481,10 @@ public class ResidenciaShow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField cepField;
     private javax.swing.JButton editarBtn;
-    private javax.swing.JLabel enderecoCepTxt;
-    private javax.swing.JLabel enderecoNumeroTxt;
-    private javax.swing.JLabel enderecoRuaTxt;
+    private javax.swing.JButton editarBtn1;
+    private javax.swing.JButton excluirBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -366,13 +492,13 @@ public class ResidenciaShow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> moradoresBox;
     private javax.swing.JTable moradoresTable;
-    private javax.swing.JLabel proprietarioCpfTxt;
-    private javax.swing.JLabel proprietarioNomeTxt;
-    private javax.swing.JButton verMensalidadesBtn;
+    private javax.swing.JTextField numeroField;
+    private javax.swing.JComboBox<String> pessoasBox;
+    private javax.swing.JButton removerBtn;
+    private javax.swing.JTextField ruaField;
     // End of variables declaration//GEN-END:variables
 }
