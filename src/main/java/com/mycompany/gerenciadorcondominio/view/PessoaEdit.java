@@ -37,17 +37,33 @@ public class PessoaEdit extends javax.swing.JFrame {
         initComponents();
         this.id = id;
         
-        // dados da pessoa
-        moradorNome.setText("");
-        moradorDtNascimento.setText("");
-        moradorCpf.setText("");
-        moradorRg.setText("");
-        
-        // dados da residencia atual
-        residenciaRua.setText("");
-        residenciaNumero.setText("");
-        residenciaResponsavel.setText("");
-        residenciaCep.setText("");
+         // dados da pessoaAdd commentMore actions
+        String nome = moradorNomeField.getText();
+        String dtNascimentoString = moradorNomeField.getText();
+        String cpf = moradorCpfField.getText();
+        String rg = moradorRgField.getText();
+
+        try{
+            java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
+            Date dtNascimento = new Date(utilDate.getTime());
+
+            try{
+                if(pessoaController.updateDados(nome, dtNascimento, cpf, rg, 1) == 1){
+                    JOptionPane.showMessageDialog(rootPane, "Morador atualizado");
+
+                    new PessoaIndex().setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Não foi possível atualizar o morador");
+                }
+            }
+            catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados ou ao editar morador");
+            }
+        }
+        catch(ParseException e){
+            JOptionPane.showMessageDialog(rootPane, "Data inválida. Formato correto: xx/xx/xxxx");
+        }
     }
     
     private void screenConfigs() {
