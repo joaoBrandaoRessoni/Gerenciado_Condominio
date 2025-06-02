@@ -40,9 +40,10 @@ public class MensalidadeController {
 
         for (int i = 0; i < mensalidades.size(); i++) {
             jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getId(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getVencimento(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getValor(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getStatus(), posicaoLinha, 0);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getId_residencia(), posicaoLinha, 1);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getVencimento(), posicaoLinha, 2);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getValor(), posicaoLinha, 3);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getStatus(), posicaoLinha, 4);
 
             posicaoLinha++;
         }
