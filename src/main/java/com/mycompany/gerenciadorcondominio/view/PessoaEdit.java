@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -30,7 +31,7 @@ public class PessoaEdit extends javax.swing.JFrame {
     private int id;
 
 
-    public PessoaEdit() {
+    public PessoaEdit(int id) {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();

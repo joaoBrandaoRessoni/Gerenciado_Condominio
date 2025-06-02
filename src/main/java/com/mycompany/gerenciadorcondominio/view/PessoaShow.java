@@ -9,6 +9,7 @@ import com.mycompany.gerenciadorcondominio.model.PessoaModal;
 import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -372,7 +373,7 @@ public class PessoaShow extends javax.swing.JFrame {
 
     private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
         // TODO add your handling code here:
-        new PessoaEdit(id).setVisible(true);
+        new PessoaEdit(1).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 

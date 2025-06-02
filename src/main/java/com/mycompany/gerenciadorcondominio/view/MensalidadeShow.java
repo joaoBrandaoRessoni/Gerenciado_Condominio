@@ -10,6 +10,7 @@ import com.mycompany.gerenciadorcondominio.model.MensalidadeModal;
 import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
