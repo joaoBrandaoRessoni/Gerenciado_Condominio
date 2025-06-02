@@ -359,12 +359,12 @@ public class ResidenciaShow extends javax.swing.JFrame {
         }
 
         new ResidenciaIndex();
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 
     private void editarBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtn1ActionPerformed
         new ResidenciaIndex();
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_editarBtn1ActionPerformed
 
     private void moradoresBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moradoresBoxActionPerformed
@@ -417,7 +417,7 @@ public class ResidenciaShow extends javax.swing.JFrame {
                 }
                 
                 new ResidenciaIndex();
-                this.setVisible(false);
+                this.dispose();
                 
             } catch(SQLException e){
                 JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -441,7 +441,7 @@ public class ResidenciaShow extends javax.swing.JFrame {
             }
 
             new ResidenciaIndex();
-            this.setVisible(false);
+            this.dispose();
         } catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
         }
