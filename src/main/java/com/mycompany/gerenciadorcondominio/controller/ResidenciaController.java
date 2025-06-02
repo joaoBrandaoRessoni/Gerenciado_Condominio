@@ -145,7 +145,7 @@ public class ResidenciaController {
         params.add(idNovoProprietario);
         params.add(idResidencia);
 
-        return DAO.runExecuteUpdateReturnAutoIncrement(sql, params);
+        return DAO.runExecuteUpdate(sql, params);
     }
 
     public int removerMorador(int idMorador, int idResidencia) throws SQLException {

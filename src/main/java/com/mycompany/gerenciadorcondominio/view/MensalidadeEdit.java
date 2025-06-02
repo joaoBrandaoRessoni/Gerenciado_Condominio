@@ -300,7 +300,7 @@ public class MensalidadeEdit extends javax.swing.JFrame {
                 java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(vencimentoString);
                 Date vencimento = new Date(utilDate.getTime());
                 
-                if(mensalidadeController.editarMensalidade(vencimento, valor, status, id) == 1){
+                if(mensalidadeController.editarMensalidade(vencimento, valor, status, id) != 0){
                     JOptionPane.showMessageDialog(rootPane, "Mensalidade editada!");
                     
                     new MensalidadeShow(id).setVisible(true);
