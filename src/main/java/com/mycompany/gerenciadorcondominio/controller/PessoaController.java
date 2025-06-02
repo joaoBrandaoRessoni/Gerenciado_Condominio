@@ -98,7 +98,6 @@ public class PessoaController {
             jTable.setValueAt(propriedades.getString("rua"), posicaoLinha, 0);
             jTable.setValueAt(propriedades.getInt("numero"), posicaoLinha, 1);
             jTable.setValueAt(propriedades.getString("cep"), posicaoLinha, 2);
-            jTable.setValueAt(propriedades.getString("cep"), posicaoLinha, 3);
             posicaoLinha++;
         }
         
