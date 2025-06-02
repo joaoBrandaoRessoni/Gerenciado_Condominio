@@ -29,7 +29,7 @@ public class PessoaIndex extends javax.swing.JFrame {
             pessoasTable = pessoaController.index(pessoasTable).table;
         }
         catch(SQLException e){
-            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados. " + e.getMessage());
         }
     }
     
@@ -263,7 +263,7 @@ public class PessoaIndex extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pessoaBtnActionPerformed
-        this.setVisible(false);
+        this.dispose();
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_pessoaBtnActionPerformed
 
@@ -272,12 +272,12 @@ public class PessoaIndex extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void houseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houseBtnActionPerformed
-        this.setVisible(false);
+        this.dispose();
         ResidenciaIndex p = new ResidenciaIndex();
     }//GEN-LAST:event_houseBtnActionPerformed
 
     private void paymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentBtnActionPerformed
-        this.setVisible(false);
+        this.dispose();
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
 
@@ -292,7 +292,7 @@ public class PessoaIndex extends javax.swing.JFrame {
                 int id = ids.get(row);
 
                 new PessoaShow(id);
-                this.setVisible(false);
+                this.dispose();
             } catch(SQLException e){
                 JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
             }
@@ -301,7 +301,7 @@ public class PessoaIndex extends javax.swing.JFrame {
 
     private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
         new PessoaNew();
-        this.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_cadastrarBtnActionPerformed
 
     /**

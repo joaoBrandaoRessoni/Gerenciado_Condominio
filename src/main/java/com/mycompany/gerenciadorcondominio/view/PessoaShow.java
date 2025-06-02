@@ -383,7 +383,7 @@ public class PessoaShow extends javax.swing.JFrame {
         }
 
         new PessoaIndex();
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 
     private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
@@ -394,7 +394,7 @@ public class PessoaShow extends javax.swing.JFrame {
                 pessoaController.delete(id);
                 
                 new PessoaIndex();
-                this.setVisible(false);
+                this.dispose();
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir pessoa", "Erro", JOptionPane.ERROR_MESSAGE);

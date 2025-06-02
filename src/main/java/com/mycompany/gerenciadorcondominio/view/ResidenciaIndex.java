@@ -273,7 +273,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         new ResidenciaNew().setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
@@ -281,12 +281,12 @@ public class ResidenciaIndex extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void paymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentBtnActionPerformed
-        this.setVisible(false);
+        this.dispose();
         MensalidadeIndex p = new MensalidadeIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
 
     private void houseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houseBtnActionPerformed
-        this.setVisible(false);
+        this.dispose();
         ResidenciaIndex p = new ResidenciaIndex();
     }//GEN-LAST:event_houseBtnActionPerformed
 
@@ -301,7 +301,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
                 int id = ids.get(row);
 
                 new ResidenciaShow(id);
-                this.setVisible(false);
+                this.dispose();
             } catch(SQLException e){
                 JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
             }
