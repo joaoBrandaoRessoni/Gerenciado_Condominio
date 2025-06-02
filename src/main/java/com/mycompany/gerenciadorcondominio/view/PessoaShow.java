@@ -368,12 +368,14 @@ public class PessoaShow extends javax.swing.JFrame {
         java.sql.Date dtNasc = java.sql.Date.valueOf(data);
 
         try {
-            if (pessoaController.searchPessoa(cpf) == 1) {
+            if (pessoaController.searchPessoa("cpf", cpf) == 1) {
                 JOptionPane.showMessageDialog(rootPane, "CPF já cadastrado");
+                return;
             }
 
-            if (pessoaController.searchPessoa(rg) == 1) {
+            if (pessoaController.searchPessoa("rg", rg) == 1) {
                 JOptionPane.showMessageDialog(rootPane, "RG já cadastrado");
+                return;
             }
                     
             pessoaController.updateDados(nome, dtNasc, cpf, cpf, id);;
@@ -383,7 +385,7 @@ public class PessoaShow extends javax.swing.JFrame {
         }
 
         new PessoaIndex();
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 
     private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
@@ -394,7 +396,7 @@ public class PessoaShow extends javax.swing.JFrame {
                 pessoaController.delete(id);
                 
                 new PessoaIndex();
-                this.setVisible(false);
+                this.dispose();
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao excluir pessoa", "Erro", JOptionPane.ERROR_MESSAGE);
