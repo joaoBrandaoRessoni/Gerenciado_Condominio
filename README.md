@@ -108,6 +108,16 @@ Banco de dados
    INSERT INTO morador_residencia (id_pessoa, id_residencia) VALUE (1, 1);
    ```
    
-3. **Execute o arquvivo main**
+3. **Execute o arquvivo GerenciadorCondominio.java**
 
 ## 📂 Fotos do Projeto
+
+Tela inicial 
+
+![image](https://github.com/user-attachments/assets/0de8b0ab-1fc4-4f6c-bd03-4b7858665943)
+
+Controle de mensalidades
+
+![image](https://github.com/user-attachments/assets/a909a352-a86a-4a5a-a74d-c1365054d59c)
+
+
