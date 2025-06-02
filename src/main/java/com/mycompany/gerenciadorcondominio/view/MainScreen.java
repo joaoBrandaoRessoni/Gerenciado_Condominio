@@ -194,7 +194,8 @@ public class MainScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void personBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personBtnActionPerformed
-        PessoaIndex p = new PessoaIndex();
+        this.dispose();
+        new PessoaIndex();
     }//GEN-LAST:event_personBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
@@ -202,13 +203,13 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void houseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houseBtnActionPerformed
-        ResidenciaIndex p = new ResidenciaIndex();
-        p.setVisible(true);
+        this.dispose();
+        new ResidenciaIndex();
     }//GEN-LAST:event_houseBtnActionPerformed
 
     private void paymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentBtnActionPerformed
-        MensalidadeIndex p = new MensalidadeIndex();
-        p.setVisible(true);
+        this.dispose();
+        new MensalidadeIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
 
     /**

@@ -368,12 +368,14 @@ public class PessoaShow extends javax.swing.JFrame {
         java.sql.Date dtNasc = java.sql.Date.valueOf(data);
 
         try {
-            if (pessoaController.searchPessoa(cpf) == 1) {
+            if (pessoaController.searchPessoa("cpf", cpf) == 1) {
                 JOptionPane.showMessageDialog(rootPane, "CPF já cadastrado");
+                return;
             }
 
-            if (pessoaController.searchPessoa(rg) == 1) {
+            if (pessoaController.searchPessoa("rg", rg) == 1) {
                 JOptionPane.showMessageDialog(rootPane, "RG já cadastrado");
+                return;
             }
                     
             pessoaController.updateDados(nome, dtNasc, cpf, cpf, id);;
