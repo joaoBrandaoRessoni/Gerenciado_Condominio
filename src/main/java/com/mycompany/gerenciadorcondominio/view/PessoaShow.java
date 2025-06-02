@@ -37,25 +37,20 @@ public class PessoaShow extends javax.swing.JFrame {
         this.id = id;
         
         try{
-            PessoaModal pessoa = pessoaController.showProprietario(id);
-             
+            PessoaModal pessoa = pessoaController.showProprietario(id);            
+            ResidenciaModal residencia = pessoaController.showMoradia(id);
+
             // dados da pessoa
             moradorNome.setText(pessoa.getNome());
             moradorDtNascimento.setText(pessoa.getDt_nasc());
             moradorCpf.setText(pessoa.getCpf());
             moradorRg.setText(pessoa.getRg());
-            
-            ResidenciaModal residencia = pessoaController.showMoradia(id);
 
-            // dados da residencia atual
+            // dados da residência atual
             residenciaRua.setText(residencia.getLogradouro());
             residenciaNumero.setText(String.valueOf(residencia.getNumero()));
-            String nomeProprietario = pessoaController.showProprietario(residencia.getId_proprietario()).getNome();
-            residenciaResponsavel.setText(nomeProprietario);
+            residenciaResponsavel.setText("sim"); // fazer
             residenciaCep.setText(residencia.getCep());
-            
-            // dados das residências que ele é proprietário
-            pessoaController.showPropriedades(id, residenciaProprietarioTable);
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -373,7 +368,7 @@ public class PessoaShow extends javax.swing.JFrame {
 
     private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
         // TODO add your handling code here:
-        new PessoaEdit(1).setVisible(true);
+        new PessoaEdit(id).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 
