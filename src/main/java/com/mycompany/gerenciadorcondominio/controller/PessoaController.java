@@ -78,8 +78,10 @@ public class PessoaController {
     public JTable showPropriedades(int idPessoa, JTable jTable) throws SQLException {
         //Buscas as propriedades
         String sql = "SELECT * FROM residencias WHERE id_proprietario = ?";
+        List<Object> params = new ArrayList();
+        params.add(idPessoa);
 
-        ResultSet propriedades = DAO.runExecuteQuery(sql, new ArrayList<>());
+        ResultSet propriedades = DAO.runExecuteQuery(sql, params);
         
         int rows = 0;
 
