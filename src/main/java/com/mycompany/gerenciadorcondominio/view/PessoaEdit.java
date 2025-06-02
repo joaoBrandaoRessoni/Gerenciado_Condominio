@@ -27,7 +27,7 @@ public class PessoaEdit extends javax.swing.JFrame {
     private JLabel residenciaResponsavel;
     private JLabel residenciaCep;
     PessoaController pessoaController = new PessoaController();
-    private final int id;
+    private int id;
 
     public PessoaEdit(int id) {
         screenConfigs();
