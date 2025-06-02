@@ -32,10 +32,10 @@ public class DAO {
         // Executar a consulta e obter o resultado
         ResultSet result = statement.executeQuery();
         statement.close();
-        
+
         return result;
     }
-    
+
     public static List runExecuteQuery(String sql, List<Object> params, String nomeModal) throws SQLException, IllegalArgumentException {
         DatabaseSingleton bdInfo = DatabaseSingleton.getInstance();
         Connection connection = DriverManager.getConnection(bdInfo.getUrl(), bdInfo.getUser(), bdInfo.getPassword());
@@ -75,5 +75,37 @@ public class DAO {
         //Fecha o statement e retonar o número de linhas afetadas
         statement.close();
         return result;
+    }
+
+    public static int runExecuteUpdateReturnAutoIncrement(String sql, List<Object> params) throws SQLException {
+        DatabaseSingleton bdInfo = DatabaseSingleton.getInstance();
+        Connection connection = DriverManager.getConnection(bdInfo.getUrl(), bdInfo.getUser(), bdInfo.getPassword());
+        // Criar um Statement para executar a consulta
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        //Roda parametro por parametro para adcionar no sql
+        for (int i = 0; i < params.size(); i++) {
+            statement.setObject(i + 1, params.get(i));
+        }
+        // Executar a consulta
+        statement.execute();
+
+        //Verifica o número de linhas afetadas
+        int result = statement.getUpdateCount();
+
+        if (result > 0) {
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int novoID = generatedKeys.getInt(1);
+                statement.close();
+                generatedKeys.close();
+                return novoID;
+            }
+            generatedKeys.close();
+        }
+
+        //Fecha o statement e retonar o número de linhas afetadas
+        statement.close();
+        return 0;   
     }
 }
