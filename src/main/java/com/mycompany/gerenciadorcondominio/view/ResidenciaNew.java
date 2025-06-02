@@ -37,7 +37,7 @@ public class ResidenciaNew extends javax.swing.JFrame {
 
             pessoas.forEach(pessoa -> {
                 pessoasBox.addItem(pessoa.getNome() + " - " + pessoa.getCpf());  
-                mapaNomeId.put(pessoa.getNome(), pessoa.getId());  // associa nome -> id
+                mapaNomeId.put(pessoa.getNome() + " - " + pessoa.getCpf(), pessoa.getId());   // associa nome -> id
             });
 
         } catch (SQLException e) {

@@ -192,7 +192,7 @@ public class ResidenciaController {
     }
     
     public int searchResidencia(String logradouro, int numero, String cep) throws SQLException {
-        String sql = "SELECT id from residencia where logradouro = ? and numero = ? and cep = ?";
+        String sql = "SELECT id from residencias where logradouro = ? and numero = ? and cep = ?";
         List<Object> params = new ArrayList();
         params.add(logradouro);
         params.add(numero);
