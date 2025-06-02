@@ -6,7 +6,6 @@ package com.mycompany.gerenciadorcondominio.view;
 
 import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import com.mycompany.gerenciadorcondominio.model.PessoaModal;
-import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
 import java.sql.SQLException;
 import javax.swing.JFrame;
@@ -28,30 +27,26 @@ public class PessoaShow extends javax.swing.JFrame {
     private JLabel residenciaCep;
     
     PessoaController pessoaController = new PessoaController();
-
+    private int id;
 
     public PessoaShow(int id) {
         initComponents();
+        this.id = id;
+        
         try{
             PessoaModal pessoa = pessoaController.showProprietario(id);
-             
-            // dados da pessoa
-            moradorNome.setText(pessoa.getNome());
-            moradorDtNascimento.setText(pessoa.getDt_nasc());
-            moradorCpf.setText(pessoa.getCpf());
-            moradorRg.setText(pessoa.getRg());
             
-            ResidenciaModal residencia = pessoaController.showMoradia(id);
+            // dados da pessoa
+            moradorNome.setText("");
+            moradorDtNascimento.setText("");
+            moradorCpf.setText("");
+            moradorRg.setText("");
 
             // dados da residencia atual
-            residenciaRua.setText(residencia.getLogradouro());
-            residenciaNumero.setText(String.valueOf(residencia.getNumero()));
-            String nomeProprietario = pessoaController.showProprietario(residencia.getId_proprietario()).getNome();
-            residenciaResponsavel.setText(nomeProprietario);
-            residenciaCep.setText(residencia.getCep());
-            
-            // dados das residências que ele é proprietário
-            pessoaController.showPropriedades(id, residenciaProprietarioTable);
+            residenciaRua.setText("");
+            residenciaNumero.setText("");
+            residenciaResponsavel.setText("");
+            residenciaCep.setText("");
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -90,6 +85,8 @@ public class PessoaShow extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
+        editarBtn = new javax.swing.JButton();
+        fecharBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -260,7 +257,7 @@ public class PessoaShow extends javax.swing.JFrame {
                             .addComponent(jLabel25)
                             .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel19))
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,26 +281,53 @@ public class PessoaShow extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
+        editarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        editarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        editarBtn.setText("Editar");
+        editarBtn.setName("editarBtn"); // NOI18N
+        editarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarBtnActionPerformed(evt);
+            }
+        });
+
+        fecharBtn.setBackground(new java.awt.Color(204, 204, 255));
+        fecharBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        fecharBtn.setText("Fechar");
+        fecharBtn.setName("salvarBtn"); // NOI18N
+        fecharBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fecharBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel16)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)))
-                .addGap(0, 47, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel16)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 729, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(248, 248, 248)
+                        .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(fecharBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,11 +339,27 @@ public class PessoaShow extends javax.swing.JFrame {
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fecharBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
+        // botão de editar
+        new PessoaEdit(id).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_editarBtnActionPerformed
+
+    private void fecharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtnActionPerformed
+        // TODO add your handling code here:
+        new PessoaIndex().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_fecharBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,6 +405,8 @@ public class PessoaShow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton editarBtn;
+    private javax.swing.JButton fecharBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

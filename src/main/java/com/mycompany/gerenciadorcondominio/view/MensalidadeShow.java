@@ -5,12 +5,8 @@
 package com.mycompany.gerenciadorcondominio.view;
 
 import com.mycompany.gerenciadorcondominio.controller.MensalidadeController;
-import com.mycompany.gerenciadorcondominio.model.PessoaModal;
-import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
-import java.sql.SQLException;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 /**
  *

@@ -30,20 +30,38 @@ public class PessoaEdit extends javax.swing.JFrame {
     PessoaController pessoaController = new PessoaController();
 
 
-    public PessoaEdit() {
+    public PessoaEdit(int id) {
         initComponents();
         
-        // dados da pessoa
-        moradorNome.setText("");
-        moradorDtNascimento.setText("");
-        moradorCpf.setText("");
-        moradorRg.setText("");
+
         
-        // dados da residencia atual
-        residenciaRua.setText("");
-        residenciaNumero.setText("");
-        residenciaResponsavel.setText("");
-        residenciaCep.setText("");
+        // dados da pessoa
+        String nome = moradorNomeField.getText();
+        String dtNascimentoString = moradorNomeField.getText();
+        String cpf = moradorCpfField.getText();
+        String rg = moradorRgField.getText();
+
+        try{
+            java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
+            Date dtNascimento = new Date(utilDate.getTime());
+
+            try{
+                if(pessoaController.updateDados(nome, dtNascimento, cpf, rg, 1) == 1){
+                    JOptionPane.showMessageDialog(rootPane, "Morador atualizado");
+
+                    new PessoaIndex().setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(rootPane, "Não foi possível atualizar o morador");
+                }
+            }
+            catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados ou ao editar morador");
+            }
+        }
+        catch(ParseException e){
+            JOptionPane.showMessageDialog(rootPane, "Data inválida. Formato correto: xx/xx/xxxx");
+        }
     }
 
     /**
@@ -410,12 +428,10 @@ public class PessoaEdit extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new PessoaEdit();
+                JFrame frame = new PessoaEdit(1);
                 frame.setBackground(new Color(30, 144, 255));
                 frame.setSize(800, 600);
                 frame.setVisible(true);
-                
-                
             }
         });
     }
