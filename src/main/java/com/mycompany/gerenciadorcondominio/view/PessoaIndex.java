@@ -4,21 +4,30 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import java.awt.Color;
-import javax.swing.JFrame;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class PessoaIndex extends javax.swing.JFrame {
-
+    PessoaController pessoaController = new PessoaController();
     /**
      * Creates new form ResidenciaShow
      */
     public PessoaIndex() {
         screenConfigs();
         initComponents();
+        
+        try{        
+            pessoaController.index(moradoresTable);
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
     }
     
     private void screenConfigs() {
@@ -49,9 +58,9 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        moradoresTable = new javax.swing.JTable();
+        visualizarBtn = new javax.swing.JButton();
+        cadastrarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -147,8 +156,8 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Pessoas");
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
+        moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -173,20 +182,25 @@ public class PessoaIndex extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(moradoresTable);
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton6.setText("Visualizar");
-        jButton6.setName("visualizarBtn"); // NOI18N
-
-        jButton7.setBackground(new java.awt.Color(204, 204, 255));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton7.setText("Cadastrar");
-        jButton7.setName("visualizarBtn"); // NOI18N
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        visualizarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        visualizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        visualizarBtn.setText("Visualizar");
+        visualizarBtn.setName("visualizarBtn"); // NOI18N
+        visualizarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                visualizarBtnActionPerformed(evt);
+            }
+        });
+
+        cadastrarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        cadastrarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cadastrarBtn.setText("Cadastrar");
+        cadastrarBtn.setName("visualizarBtn"); // NOI18N
+        cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarBtnActionPerformed(evt);
             }
         });
 
@@ -200,9 +214,9 @@ public class PessoaIndex extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jButton7)
+                        .addComponent(cadastrarBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton6))
+                        .addComponent(visualizarBtn))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -218,8 +232,8 @@ public class PessoaIndex extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cadastrarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(visualizarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
@@ -265,9 +279,24 @@ public class PessoaIndex extends javax.swing.JFrame {
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+        new PessoaNew().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_cadastrarBtnActionPerformed
+
+    private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = moradoresTable.getSelectedRow();
+        if(linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(rootPane, "Selecione um morador para visualizar");
+        }
+        else{
+            int id = (Integer) moradoresTable.getValueAt(linhaSelecionada, 0);
+            new PessoaShow(id).setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_visualizarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -368,9 +397,8 @@ public class PessoaIndex extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cadastrarBtn;
     private javax.swing.JButton houseBtn;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -378,9 +406,10 @@ public class PessoaIndex extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton logoutBtn;
+    private javax.swing.JTable moradoresTable;
     private javax.swing.JButton paymentBtn;
     private javax.swing.JButton pessoaBtn;
+    private javax.swing.JButton visualizarBtn;
     // End of variables declaration//GEN-END:variables
 }
