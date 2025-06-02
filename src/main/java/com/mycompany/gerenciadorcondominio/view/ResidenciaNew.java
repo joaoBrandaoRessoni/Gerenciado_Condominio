@@ -4,28 +4,51 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
+import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
+import com.mycompany.gerenciadorcondominio.model.PessoaModal;
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class ResidenciaNew extends javax.swing.JFrame {
+    ResidenciaController residenciaController = new ResidenciaController();
+    PessoaController pessoaController = new PessoaController();
+    Map<String, Integer> mapaNomeId = new HashMap<>();
 
     /**
      * Creates new form ResidenciaShow
      */
     public ResidenciaNew() {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
+        
+        try {
+            List<PessoaModal> pessoas = pessoaController.indexPessoa();
+
+            pessoas.forEach(pessoa -> {
+                pessoasBox.addItem(pessoa.getNome() + " - " + pessoa.getCpf());  
+                mapaNomeId.put(pessoa.getNome(), pessoa.getId());  // associa nome -> id
+            });
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao carregar as pessoas: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void screenConfigs() {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
         
@@ -44,10 +67,10 @@ public class ResidenciaNew extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        ruaField = new javax.swing.JTextField();
+        numeroField = new javax.swing.JTextField();
+        cepField = new javax.swing.JFormattedTextField();
+        pessoasBox = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
@@ -74,19 +97,19 @@ public class ResidenciaNew extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Rua");
 
-        jTextField1.setText("Avenida das Flores");
-        jTextField1.setName("residenciaRuaField"); // NOI18N
+        ruaField.setText("Avenida das Flores");
+        ruaField.setName("residenciaRuaField"); // NOI18N
 
-        jTextField2.setText("23");
-        jTextField2.setName("residenciaNumeroField"); // NOI18N
+        numeroField.setText("23");
+        numeroField.setName("residenciaNumeroField"); // NOI18N
 
         try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###-###")));
+            cepField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###-###")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField1.setText("12.123-123");
-        jFormattedTextField1.setName("residenciaCepField"); // NOI18N
+        cepField.setText("12.123-123");
+        cepField.setName("residenciaCepField"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -106,10 +129,10 @@ public class ResidenciaNew extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(numeroField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(434, 434, 434)
-                                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 728, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cepField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ruaField, javax.swing.GroupLayout.PREFERRED_SIZE, 728, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -118,20 +141,25 @@ public class ResidenciaNew extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ruaField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numeroField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cepField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pessoas" }));
+        pessoasBox.setBackground(new java.awt.Color(204, 204, 255));
+        pessoasBox.setToolTipText("Selecione uma pessoa...");
+        pessoasBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pessoasBoxActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(204, 204, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -167,7 +195,7 @@ public class ResidenciaNew extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pessoasBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -186,8 +214,8 @@ public class ResidenciaNew extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addComponent(pessoasBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(27, 27, 27)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,9 +230,32 @@ public class ResidenciaNew extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // cadastrar
-        new ResidenciaIndex().setVisible(true);
-        this.dispose();
+        String rua = ruaField.getText();
+        int numero = Integer.parseInt(numeroField.getText());
+        String cep = cepField.getText();
+        
+        if (rua == null || rua.isEmpty() || 
+            numero == 0 || 
+            cep == null || cep.isEmpty()) {
+
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;  // para evitar continuar com dados inválidos
+        }
+        int idProprietario = -1;
+        String nomeSelecionado = (String) pessoasBox.getSelectedItem();
+        if (nomeSelecionado != null) {
+            idProprietario = mapaNomeId.getOrDefault(nomeSelecionado, -1);
+        }
+        
+        try {
+            residenciaController.insertResidencia(idProprietario, numero, cep, rua);
+            JOptionPane.showMessageDialog(null, "Residência cadastrada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar residência: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        new ResidenciaIndex();
+        this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -212,6 +263,10 @@ public class ResidenciaNew extends javax.swing.JFrame {
         new ResidenciaIndex().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void pessoasBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pessoasBoxActionPerformed
+
+    }//GEN-LAST:event_pessoasBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,17 +305,17 @@ public class ResidenciaNew extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField cepField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField numeroField;
+    private javax.swing.JComboBox<String> pessoasBox;
+    private javax.swing.JTextField ruaField;
     // End of variables declaration//GEN-END:variables
 }

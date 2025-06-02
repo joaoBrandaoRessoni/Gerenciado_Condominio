@@ -18,6 +18,7 @@ public class MensalidadeEdit extends javax.swing.JFrame {
      */
 
     public MensalidadeEdit(int id) {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
         this.id = id;
@@ -27,7 +28,6 @@ public class MensalidadeEdit extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 

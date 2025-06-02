@@ -55,6 +55,11 @@ public class PessoaController {
         return jTable;
     }
     
+    public List<PessoaModal> indexPessoa() throws SQLException {
+        String sql = "SELECT * FROM pessoas";
+        return DAO.runExecuteQuery(sql, new ArrayList<>(), "PessoaModal");
+    }
+    
     public List<ResidenciaModal> showAllResidencias() throws SQLException{
         String sql = "SELECT * FROM residencias";
         return DAO.runExecuteQuery(sql, new ArrayList<>(), "ResidenciaModal");
