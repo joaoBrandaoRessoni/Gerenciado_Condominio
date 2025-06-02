@@ -5,9 +5,12 @@
 package com.mycompany.gerenciadorcondominio.view;
 
 import com.mycompany.gerenciadorcondominio.controller.MensalidadeController;
+import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
 import com.mycompany.gerenciadorcondominio.model.MensalidadeModal;
+import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,9 +27,25 @@ public class MensalidadeShow extends javax.swing.JFrame {
         
         try{
             MensalidadeModal mensalidade = mensalidadeController.show(id);
+            if(mensalidade != null){
+                mensalidadeVencimentoTxt.setText(mensalidade.getVencimento());
+                mensalidadeValorTxt.setText(mensalidade.getVencimento());
+                String status = mensalidade.getStatus() == 1 ?  "À pagar" : "Paga";
+                mensalidadeStatusTxt.setText(status);
+                
+                ResidenciaModal residencia = new ResidenciaController().showResidencia(mensalidade.getId_residencia());
+                residenciaRuaTxt.setText(residencia.getLogradouro());
+                residenciaNumeroTxt.setText(String.valueOf(residencia.getNumero()));
+                residenciaCepTxt.setText(residencia.getCep());
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Mensalidade não encontrada");
+                new ResidenciaIndex().setVisible(true);
+                this.dispose();
+            }
         }
         catch(SQLException e){
-            
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
         }
     }
     
@@ -158,13 +177,13 @@ public class MensalidadeShow extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Valor");
 
-        mensalidadeVencimentoTxt.setText("Avenida das Flores");
+        mensalidadeVencimentoTxt.setText("10/01/2025");
         mensalidadeVencimentoTxt.setName("enderecoRuaTxt"); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Status");
 
-        mensalidadeValorTxt.setText("23");
+        mensalidadeValorTxt.setText("23,25");
         mensalidadeValorTxt.setName("enderecoNumeroTxt"); // NOI18N
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -232,13 +251,11 @@ public class MensalidadeShow extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15)
                             .addComponent(jLabel1)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(19, 57, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -272,13 +289,13 @@ public class MensalidadeShow extends javax.swing.JFrame {
 
     private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
         // botão de editar
-        new ResidenciaEdit(id).setVisible(true);
+        new MensalidadeEdit(id).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_editarBtnActionPerformed
 
     private void fecharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtnActionPerformed
-        // TODO add your handling code here:
-        new ResidenciaIndex().setVisible(true);
+        // botão de fechar
+        new MensalidadeIndex().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_fecharBtnActionPerformed
 

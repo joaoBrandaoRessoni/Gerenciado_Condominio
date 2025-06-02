@@ -294,7 +294,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="mensalidadeVencimentoTxt">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Avenida das Flores"/>
+            <Property name="text" type="java.lang.String" value="10/01/2025"/>
             <Property name="name" type="java.lang.String" value="enderecoRuaTxt" noResource="true"/>
           </Properties>
         </Component>
@@ -308,7 +308,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="mensalidadeValorTxt">
           <Properties>
-            <Property name="text" type="java.lang.String" value="23"/>
+            <Property name="text" type="java.lang.String" value="23,25"/>
             <Property name="name" type="java.lang.String" value="enderecoNumeroTxt" noResource="true"/>
           </Properties>
         </Component>

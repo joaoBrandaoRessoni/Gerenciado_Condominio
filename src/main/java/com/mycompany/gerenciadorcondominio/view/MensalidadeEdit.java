@@ -5,8 +5,14 @@
 package com.mycompany.gerenciadorcondominio.view;
 
 import com.mycompany.gerenciadorcondominio.controller.MensalidadeController;
+import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
+import com.mycompany.gerenciadorcondominio.model.MensalidadeModal;
+import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,20 +22,22 @@ import javax.swing.JOptionPane;
 public class MensalidadeEdit extends javax.swing.JFrame {
     MensalidadeController mensalidadeController = new MensalidadeController();
     private int id;
-    /**
-     * Creates new form ResidenciaShow
-     */
-
+    
     public MensalidadeEdit(int id) {
         screenConfigs();
         initComponents();
         this.id = id;
-        
-        for (int mes = 1; mes <= 12; mes++) {
-            mesesComboBox.addItem(String.valueOf(mes));
+
+        try{
+            MensalidadeModal mensalidade = mensalidadeController.show(id);
+
+            ResidenciaModal residencia = new ResidenciaController().showResidencia(mensalidade.getId_residencia());
+            residenciaRuaTxt.setText(residencia.getLogradouro());
+            residenciaNumeroTxt.setText(String.valueOf(residencia.getNumero()));
+            residenciaCepTxt.setText(residencia.getCep());
         }
-        for (int ano = 2025; ano >= 1990; ano--) {
-            anosComboBox.addItem(String.valueOf(ano));
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
         }
     }
     
@@ -58,13 +66,17 @@ public class MensalidadeEdit extends javax.swing.JFrame {
         residenciaNumeroTxt = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         residenciaCepTxt = new javax.swing.JLabel();
+        salvarBtn = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
-        mesesComboBox = new javax.swing.JComboBox<>();
-        pagarBtn = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        mensalidadeVencimentoField = new javax.swing.JFormattedTextField();
+        mensalidadeValorField = new javax.swing.JFormattedTextField();
+        mensalidadeStatusComboBox = new javax.swing.JComboBox<>();
         cancelarBtn = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        mensalidadesTable = new javax.swing.JTable();
-        anosComboBox = new javax.swing.JComboBox<>();
+        excluirBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -107,7 +119,7 @@ public class MensalidadeEdit extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(residenciaRuaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 117, Short.MAX_VALUE))
+                        .addGap(0, 10, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -134,75 +146,94 @@ public class MensalidadeEdit extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(residenciaNumeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(residenciaCepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
+
+        salvarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        salvarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        salvarBtn.setText("Salvar");
+        salvarBtn.setName("salvarBtn"); // NOI18N
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBtnActionPerformed(evt);
+            }
+        });
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel15.setText("Mensalidades");
 
-        mesesComboBox.setBackground(new java.awt.Color(204, 204, 255));
-        mesesComboBox.setName("mesSelect"); // NOI18N
-        mesesComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mesesComboBoxActionPerformed(evt);
-            }
-        });
+        jPanel3.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setToolTipText("");
+        jPanel3.setName("Endereço"); // NOI18N
 
-        pagarBtn.setBackground(new java.awt.Color(204, 204, 255));
-        pagarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        pagarBtn.setText("Pagar");
-        pagarBtn.setName("pagarBtn"); // NOI18N
-        pagarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pagarBtnActionPerformed(evt);
-            }
-        });
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setText("Valor");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setText("Status");
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel13.setText("Vencimento");
+
+        mensalidadeVencimentoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+
+        mensalidadeValorField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+
+        mensalidadeStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "À pagar", "Paga" }));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(mensalidadeVencimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(mensalidadeValorField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mensalidadeStatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(21, 21, 21))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mensalidadeVencimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mensalidadeValorField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mensalidadeStatusComboBox))
+                .addGap(14, 14, 14))
+        );
 
         cancelarBtn.setBackground(new java.awt.Color(204, 204, 255));
         cancelarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         cancelarBtn.setText("Cancelar");
-        cancelarBtn.setToolTipText("");
-        cancelarBtn.setActionCommand("");
-        cancelarBtn.setName("cancelarBtn"); // NOI18N
+        cancelarBtn.setName("editarBtn"); // NOI18N
         cancelarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarBtnActionPerformed(evt);
             }
         });
 
-        mensalidadesTable.setBackground(new java.awt.Color(204, 204, 255));
-        mensalidadesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Mês", "Vencimento", "Valor", "Status"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(mensalidadesTable);
-
-        anosComboBox.setBackground(new java.awt.Color(204, 204, 255));
-        anosComboBox.setName("mesSelect"); // NOI18N
-        anosComboBox.addActionListener(new java.awt.event.ActionListener() {
+        excluirBtn.setBackground(new java.awt.Color(204, 204, 255));
+        excluirBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        excluirBtn.setText("Excluir");
+        excluirBtn.setName("editarBtn"); // NOI18N
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                anosComboBoxActionPerformed(evt);
+                excluirBtnActionPerformed(evt);
             }
         });
 
@@ -211,24 +242,26 @@ public class MensalidadeEdit extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
-                            .addComponent(jLabel1)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(mesesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(anosComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel1))
+                        .addContainerGap(508, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(241, 241, 241)
-                        .addComponent(pagarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 34, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(salvarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(167, 167, 167))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,58 +273,75 @@ public class MensalidadeEdit extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jLabel15)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mesesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(anosComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pagarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(196, 196, 196))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(salvarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(77, 77, 77))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void pagarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarBtnActionPerformed
-        // botão de pagar
-        
-                int mes = (int) mesesComboBox.getSelectedIndex();
-        int ano = (int) anosComboBox.getSelectedIndex();
-
-        if((mes != 0) && (ano != 0)){
-            try{        
-                mensalidadeController.index(mes, ano, mensalidadesTable);
-                        
-                new MensalidadeShow(id).setVisible(true);
-                this.dispose();
+    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
+        // botão de salvar
+                
+        try{
+            String vencimentoString = mensalidadeVencimentoField.getText();
+            double valor = Double.parseDouble(mensalidadeValorField.getText());
+            int status = ((String) mensalidadeStatusComboBox.getSelectedItem()) == "À pagar" ? 1 : 0;
+            
+            try{
+                java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(vencimentoString);
+                Date vencimento = new Date(utilDate.getTime());
+                
+                if(mensalidadeController.editarMensalidade(vencimento, valor, status, id) == 1){
+                    JOptionPane.showMessageDialog(rootPane, "Mensalidade editada!");
+                    
+                    new MensalidadeShow(id).setVisible(true);
+                    this.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(rootPane, "Erro ao editar mensalidade");
+                }
             }
-            catch(SQLException e){
-                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            catch(ParseException e){
+                JOptionPane.showMessageDialog(rootPane, "Data do vencimento incorreta. Formato correto: xx/xx/xxxx");
             }
         }
-        else{
-            JOptionPane.showMessageDialog(rootPane, "Mês e ano são obrigatórios");
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
         }
-        
-
-    }//GEN-LAST:event_pagarBtnActionPerformed
+    }//GEN-LAST:event_salvarBtnActionPerformed
 
     private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
         // botão de cancelar
-        new MensalidadeShow(id).setVisible(true);
+        new MensalidadeIndex().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_cancelarBtnActionPerformed
 
-    private void mesesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesesComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mesesComboBoxActionPerformed
-
-    private void anosComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anosComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_anosComboBoxActionPerformed
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        // botão de excluir
+        try{
+            if(mensalidadeController.deletarMensalidade(id) == 1){
+                JOptionPane.showMessageDialog(rootPane, "Mensalidade deletada!");
+           
+                new MensalidadeIndex().setVisible(true);
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Erro ao excluir mensalidade");
+            }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
+    }//GEN-LAST:event_excluirBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -332,20 +382,24 @@ public class MensalidadeEdit extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> anosComboBox;
     private javax.swing.JButton cancelarBtn;
+    private javax.swing.JButton excluirBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable mensalidadesTable;
-    private javax.swing.JComboBox<String> mesesComboBox;
-    private javax.swing.JButton pagarBtn;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JComboBox<String> mensalidadeStatusComboBox;
+    private javax.swing.JFormattedTextField mensalidadeValorField;
+    private javax.swing.JFormattedTextField mensalidadeVencimentoField;
     private javax.swing.JLabel residenciaCepTxt;
     private javax.swing.JLabel residenciaNumeroTxt;
     private javax.swing.JLabel residenciaRuaTxt;
+    private javax.swing.JButton salvarBtn;
     // End of variables declaration//GEN-END:variables
 }
