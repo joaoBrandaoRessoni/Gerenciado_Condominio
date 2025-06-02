@@ -1,0 +1,46 @@
+CREATE DATABASE condominio;
+USE condominio;
+
+CREATE TABLE pessoas (
+	id int primary key auto_increment,
+    nome varchar(255),
+    dt_nasc date,
+    cpf varchar(15),
+    rg varchar(15)
+);
+
+CREATE TABLE residencias(
+	id int primary key auto_increment,
+    id_proprietario int,
+    numero int not null,
+    cep varchar(10),
+    logradouro varchar(255),
+    data_criacao datetime default current_timestamp,
+    
+    foreign key (id_proprietario) references pessoas (id)
+);
+
+CREATE TABLE morador_residencia(
+	id int primary key auto_increment,
+    id_pessoa int,
+    id_residencia int,
+    
+    foreign key (id_pessoa) references pessoas (id) ON DELETE CASCADE,
+    foreign key (id_residencia) references residencias (id) ON DELETE CASCADE
+);
+
+CREATE TABLE mensalidade(
+	id int primary key auto_increment,
+    id_residencia int,
+    vencimento date,
+    valor double,
+    status int,
+    
+    foreign key (id_residencia) references residencias (id) ON DELETE CASCADE
+);
+
+INSERT INTO pessoas (nome, dt_nasc, cpf, rg) VALUES ("Joao", "2010-05-20", "434231532", "4324123143");
+
+INSERT INTO residencias (id_proprietario, numero, cep, logradouro) VALUES (1, "120", "13880-000", "kaique da sila");
+
+INSERT INTO morador_residencia (id_pessoa, id_residencia) VALUE (1, 1);

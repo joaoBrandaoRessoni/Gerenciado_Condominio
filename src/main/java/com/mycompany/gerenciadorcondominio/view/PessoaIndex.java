@@ -19,6 +19,7 @@ public class PessoaIndex extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public PessoaIndex() {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
         
@@ -34,7 +35,6 @@ public class PessoaIndex extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -58,9 +58,10 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        moradoresTable = new javax.swing.JTable();
-        visualizarBtn = new javax.swing.JButton();
-        cadastrarBtn = new javax.swing.JButton();
+        jTable1 = new javax.swing.JTable();
+        jButton6 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -154,7 +155,7 @@ public class PessoaIndex extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setText("Pessoas");
+        jLabel2.setText("Mensalidades");
 
         moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
         moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -164,11 +165,11 @@ public class PessoaIndex extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nome", "CPF", "Casas", "Responsável"
+                "ID Residência", "Vencimento", "Valor", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -182,25 +183,28 @@ public class PessoaIndex extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(moradoresTable);
+        jScrollPane1.setViewportView(jTable1);
 
-        visualizarBtn.setBackground(new java.awt.Color(204, 204, 255));
-        visualizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        visualizarBtn.setText("Visualizar");
-        visualizarBtn.setName("visualizarBtn"); // NOI18N
-        visualizarBtn.addActionListener(new java.awt.event.ActionListener() {
+        jButton6.setBackground(new java.awt.Color(204, 204, 255));
+        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton6.setText("Visualizar");
+        jButton6.setName("visualizarBtn"); // NOI18N
+
+        jComboBox2.setBackground(new java.awt.Color(204, 204, 255));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Meses" }));
+        jComboBox2.setName("mesesSelect"); // NOI18N
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                visualizarBtnActionPerformed(evt);
+                jComboBox2ActionPerformed(evt);
             }
         });
 
-        cadastrarBtn.setBackground(new java.awt.Color(204, 204, 255));
-        cadastrarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        cadastrarBtn.setText("Cadastrar");
-        cadastrarBtn.setName("visualizarBtn"); // NOI18N
-        cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1.setBackground(new java.awt.Color(204, 204, 255));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ano" }));
+        jComboBox1.setName("anoSelect"); // NOI18N
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastrarBtnActionPerformed(evt);
+                jComboBox1ActionPerformed(evt);
             }
         });
 
@@ -212,11 +216,13 @@ public class PessoaIndex extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(cadastrarBtn)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(visualizarBtn))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -232,8 +238,9 @@ public class PessoaIndex extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cadastrarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(visualizarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jComboBox2)
+                            .addComponent(jComboBox1)
+                            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
@@ -265,6 +272,14 @@ public class PessoaIndex extends javax.swing.JFrame {
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_pessoaBtnActionPerformed
 
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // mês
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // ano
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         System.exit(0);
     }//GEN-LAST:event_logoutBtnActionPerformed
@@ -278,25 +293,6 @@ public class PessoaIndex extends javax.swing.JFrame {
         this.setVisible(false);
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
-
-    private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
-        // TODO add your handling code here:
-        new PessoaNew().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_cadastrarBtnActionPerformed
-
-    private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
-        // TODO add your handling code here:
-        int linhaSelecionada = moradoresTable.getSelectedRow();
-        if(linhaSelecionada == -1){
-            JOptionPane.showMessageDialog(rootPane, "Selecione um morador para visualizar");
-        }
-        else{
-            int id = (Integer) moradoresTable.getValueAt(linhaSelecionada, 0);
-            new PessoaShow(id).setVisible(true);
-            this.dispose();
-        }
-    }//GEN-LAST:event_visualizarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -399,6 +395,9 @@ public class PessoaIndex extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cadastrarBtn;
     private javax.swing.JButton houseBtn;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

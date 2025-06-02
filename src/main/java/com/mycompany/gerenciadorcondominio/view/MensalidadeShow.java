@@ -21,6 +21,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
     private int id;
     
     public MensalidadeShow(int id) {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
         this.id = id;
@@ -53,7 +54,6 @@ public class MensalidadeShow extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 

@@ -21,6 +21,13 @@ Desenvolvedores: João Paulo, Maria Eduarda e Maria Luiza
 - **Banco de Dados Relacional** para armazenamento persistente das informações
 - Utilização dos padrões de projeto: MVC, DAO, Factory e Singleton
 
+Diagrama de classes
+![image](https://github.com/user-attachments/assets/4328df25-d658-4086-b8de-b5dd3d5a4da3)
+![image](https://github.com/user-attachments/assets/0636e140-3d46-4fed-a46f-91061320134b)
+
+Banco de dados
+
+![image](https://github.com/user-attachments/assets/55cf2c40-24c7-4cb3-8f21-2a84860e9d67)
 
 ## 🚀 Funcionalidades
 
@@ -52,7 +59,55 @@ Desenvolvedores: João Paulo, Maria Eduarda e Maria Luiza
    git clone https://github.com/seuusuario/gerenciador-condominio.git
 
 2. **Execute o script SQL para criar o banco de dados**
-
+   ```
+   CREATE DATABASE condominio;
+   USE condominio;
+   
+   CREATE TABLE pessoas (
+      id int primary key auto_increment,
+       nome varchar(255),
+       dt_nasc date,
+       cpf varchar(15),
+       rg varchar(15)
+   );
+   
+   CREATE TABLE residencias(
+      id int primary key auto_increment,
+       id_proprietario int,
+       numero int not null,
+       cep varchar(10),
+       logradouro varchar(255),
+       data_criacao datetime default current_timestamp,
+       
+       foreign key (id_proprietario) references pessoas (id)
+   );
+   
+   CREATE TABLE morador_residencia(
+      id int primary key auto_increment,
+       id_pessoa int,
+       id_residencia int,
+       
+       foreign key (id_pessoa) references pessoas (id) ON DELETE CASCADE,
+       foreign key (id_residencia) references residencias (id) ON DELETE CASCADE
+   );
+   
+   CREATE TABLE mensalidade(
+      id int primary key auto_increment,
+       id_residencia int,
+       vencimento date,
+       valor double,
+       status int,
+       
+       foreign key (id_residencia) references residencias (id) ON DELETE CASCADE
+   );
+   
+   INSERT INTO pessoas (nome, dt_nasc, cpf, rg) VALUES ("Joao", "2010-05-20", "434231532", "4324123143");
+   
+   INSERT INTO residencias (id_proprietario, numero, cep, logradouro) VALUES (1, "120", "13880-000", "kaique da sila");
+   
+   INSERT INTO morador_residencia (id_pessoa, id_residencia) VALUE (1, 1);
+   ```
+   
 3. **Execute o arquvivo main**
 
 ## 📂 Fotos do Projeto

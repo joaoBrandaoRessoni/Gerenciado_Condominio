@@ -31,7 +31,6 @@ public class DAO {
         }
         // Executar a consulta e obter o resultado
         ResultSet result = statement.executeQuery();
-        statement.close();
         
         return result;
     }

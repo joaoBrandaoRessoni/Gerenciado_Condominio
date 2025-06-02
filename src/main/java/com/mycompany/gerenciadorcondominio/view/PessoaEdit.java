@@ -29,7 +29,9 @@ public class PessoaEdit extends javax.swing.JFrame {
     PessoaController pessoaController = new PessoaController();
     private int id;
 
-    public PessoaEdit(int id) {
+
+    public PessoaEdit() {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
         this.id = id;
@@ -51,7 +53,6 @@ public class PessoaEdit extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 

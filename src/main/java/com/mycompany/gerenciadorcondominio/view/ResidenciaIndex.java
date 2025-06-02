@@ -7,6 +7,8 @@ package com.mycompany.gerenciadorcondominio.view;
 import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,15 +17,17 @@ import javax.swing.JOptionPane;
  */
 public class ResidenciaIndex extends javax.swing.JFrame {
     ResidenciaController residenciaController = new ResidenciaController();
+
     /**
      * Creates new form ResidenciaShow
      */
     public ResidenciaIndex() {
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
         
         try{        
-            residenciaController.index(residenciasTable);
+            residenciasTable = residenciaController.index(residenciasTable).table;
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -34,7 +38,6 @@ public class ResidenciaIndex extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
         
@@ -57,7 +60,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
+        viewBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         residenciasTable = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
@@ -156,10 +159,15 @@ public class ResidenciaIndex extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Residências");
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton6.setText("Visualizar");
-        jButton6.setName("visualizarBtn"); // NOI18N
+        viewBtn.setBackground(new java.awt.Color(204, 204, 255));
+        viewBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        viewBtn.setText("Visualizar");
+        viewBtn.setName("visualizarBtn"); // NOI18N
+        viewBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewBtnActionPerformed(evt);
+            }
+        });
 
         residenciasTable.setBackground(new java.awt.Color(204, 204, 255));
         residenciasTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -169,14 +177,14 @@ public class ResidenciaIndex extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nome", "CPF", "Casas", "Responsável"
+                "Logradouro", "Número", "Proprietário", "Moradores"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -212,7 +220,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
                         .addGap(502, 502, 502)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
-                        .addComponent(jButton6))
+                        .addComponent(viewBtn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addContainerGap(12, Short.MAX_VALUE))
@@ -228,7 +236,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(viewBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33))
@@ -265,7 +273,7 @@ public class ResidenciaIndex extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         new ResidenciaNew().setVisible(true);
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
@@ -281,6 +289,24 @@ public class ResidenciaIndex extends javax.swing.JFrame {
         this.setVisible(false);
         ResidenciaIndex p = new ResidenciaIndex();
     }//GEN-LAST:event_houseBtnActionPerformed
+
+    private void viewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewBtnActionPerformed
+        int row = residenciasTable.getSelectedRow();
+        
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione uma residência para continuar", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                List<Integer> ids = residenciaController.index(residenciasTable).ids;
+                int id = ids.get(row);
+
+                new ResidenciaShow(id);
+                this.setVisible(false);
+            } catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            }
+        }       
+    }//GEN-LAST:event_viewBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -447,7 +473,6 @@ public class ResidenciaIndex extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton houseBtn;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -459,5 +484,6 @@ public class ResidenciaIndex extends javax.swing.JFrame {
     private javax.swing.JButton paymentBtn;
     private javax.swing.JButton pessoaBtn;
     private javax.swing.JTable residenciasTable;
+    private javax.swing.JButton viewBtn;
     // End of variables declaration//GEN-END:variables
 }
