@@ -40,31 +40,20 @@ public class MensalidadeController {
 
         for (int i = 0; i < mensalidades.size(); i++) {
             jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getId(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getVencimento(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getValor(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getStatus(), posicaoLinha, 0);
-
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getId_residencia(), posicaoLinha, 1);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getVencimento(), posicaoLinha, 2);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getValor(), posicaoLinha, 3);
+            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getStatus(), posicaoLinha, 4);
             posicaoLinha++;
         }
 
         return jTable;
     }
-
-    public MensalidadeModal show(int mes, int ano, int idResidencia) throws SQLException {
-        String sql = "SELECT "
-                + "    m.id, r.id AS id_residencia, "
-                + "COALESCE(m.vencimento, CONCAT(?, '-', ?, '-10')) as vencimento, "
-                + "COALESCE(m.valor, 200) as valor, "
-                + "m.status "
-                + "FROM residencias r "
-                + "LEFT JOIN mensalidade m ON m.id_residencia = r.id "
-                + "WHERE MONTH(m.vencimento) = ? AND YEAR(m.vencimento) = ? AND r.id = ?";
+    
+    public MensalidadeModal show(int id) throws SQLException {
+        String sql = "SELECT * FROM mensalidade WHERE id = ?";
         List<Object> params = new ArrayList();
-        params.add(ano);
-        params.add(mes < 10 ? "0" + mes : mes);
-        params.add(mes);
-        params.add(ano);
-        params.add(idResidencia);
+        params.add(id);
 
         List<MensalidadeModal> retornoMensalidade = DAO.runExecuteQuery(sql, params, "MensalidadeModal");
         MensalidadeModal mensalidade = null;

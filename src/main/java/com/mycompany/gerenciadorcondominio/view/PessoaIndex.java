@@ -4,15 +4,17 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import java.awt.Color;
-import javax.swing.JFrame;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class PessoaIndex extends javax.swing.JFrame {
-
+    PessoaController pessoaController = new PessoaController();
     /**
      * Creates new form ResidenciaShow
      */
@@ -20,6 +22,13 @@ public class PessoaIndex extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
+        
+        try{        
+            pessoaController.index(moradoresTable);
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
     }
     
     private void screenConfigs() {
@@ -148,8 +157,8 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Mensalidades");
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
+        moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -384,6 +393,7 @@ public class PessoaIndex extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cadastrarBtn;
     private javax.swing.JButton houseBtn;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -395,9 +405,10 @@ public class PessoaIndex extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton logoutBtn;
+    private javax.swing.JTable moradoresTable;
     private javax.swing.JButton paymentBtn;
     private javax.swing.JButton pessoaBtn;
+    private javax.swing.JButton visualizarBtn;
     // End of variables declaration//GEN-END:variables
 }

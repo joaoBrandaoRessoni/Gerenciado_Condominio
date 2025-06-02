@@ -266,8 +266,8 @@ public class PessoaNew extends javax.swing.JFrame {
                             // atribuir a nova pessoa à residência selecionada
                             String idString = residenciaSelecionada.split(" - ")[0];
                             int idResidencia = Integer.parseInt(idString);
-
-                            if((new ResidenciaController().adicionarMorador(1, idResidencia)) == 1){
+                            
+                            if((new ResidenciaController().adicionarMorador(1, idResidencia)) != 0){
                                 JOptionPane.showMessageDialog(rootPane, nome + " cadastrado(a) e fazendo parte da Residência");
                             }
                             else{
