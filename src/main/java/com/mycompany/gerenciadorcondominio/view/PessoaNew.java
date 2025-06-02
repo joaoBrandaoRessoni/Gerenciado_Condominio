@@ -268,12 +268,12 @@ public class PessoaNew extends javax.swing.JFrame {
                 
                 // adicionar novo registro de pessoa
                 try{
-                    if (pessoaController.searchPessoa("cpf", cpf) == 1) {
+                    if (pessoaController.searchPessoa("cpf", cpf, 0) == 1) {
                         JOptionPane.showMessageDialog(rootPane, "CPF já cadastrado");
                         return;
                     }
                     
-                    if (pessoaController.searchPessoa("rg", rg) == 1) {
+                    if (pessoaController.searchPessoa("rg", rg, 0) == 1) {
                         JOptionPane.showMessageDialog(rootPane, "RG já cadastrado");
                         return;
                     }

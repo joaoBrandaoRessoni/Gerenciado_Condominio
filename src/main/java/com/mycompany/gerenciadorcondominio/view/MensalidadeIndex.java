@@ -36,7 +36,6 @@ public class MensalidadeIndex extends javax.swing.JFrame {
             mensalidadesTable = mensalidadeController.index(0, 0, mensalidadesTable).table;
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
         }
     }
@@ -395,7 +394,6 @@ public class MensalidadeIndex extends javax.swing.JFrame {
         int mes = Integer.parseInt(mesesComboBox.getSelectedItem().toString());
         int ano = Integer.parseInt(anosComboBox.getSelectedItem().toString());
 
-        System.out.println(mes + ano);
         if((mes != 0) && (ano != 0)){
             try{        
                 mensalidadesTable = mensalidadeController.index(mes, ano, mensalidadesTable).table;

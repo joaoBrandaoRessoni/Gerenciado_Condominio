@@ -42,7 +42,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             mensalidadeVencimentoField.setText(sdf.format(vencimento));
             mensalidadeValorField.setText(String.valueOf(mensalidade.getValor()));
-            mensalidadeStatusComboBox.setSelectedIndex(mensalidade.getStatus());
+            mensalidadeStatusComboBox.setSelectedIndex(1 - mensalidade.getStatus());
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -310,12 +310,12 @@ public class MensalidadeShow extends javax.swing.JFrame {
             String vencimentoString = mensalidadeVencimentoField.getText();
             double valor = Double.parseDouble(mensalidadeValorField.getText());
             int status = mensalidadeStatusComboBox.getSelectedIndex();
-            
+
             try{
                 java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(vencimentoString);
                 Date vencimento = new Date(utilDate.getTime());
                 
-                if(mensalidadeController.editarMensalidade(vencimento, valor, status, id) != 0){
+                if(mensalidadeController.editarMensalidade(vencimento, valor, 1 - status, id) != 0){
                     JOptionPane.showMessageDialog(rootPane, "Mensalidade editada!");
                     
                     new MensalidadeIndex();

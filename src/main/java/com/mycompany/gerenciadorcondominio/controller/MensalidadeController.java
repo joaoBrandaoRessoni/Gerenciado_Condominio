@@ -149,33 +149,42 @@ public class MensalidadeController {
     }
 
     public int criarMensalidades(int mes, int ano) throws SQLException {
-        String sql = "SELECT r.* FROM residencias r\n"
-                + "WHERE NOT EXISTS (\n"
-                + "    SELECT 1\n"
-                + "    FROM mensalidade m\n"
-                + "    WHERE m.id_residencia = r.id\n"
-                + "      AND MONTH(m.vencimento) = ?\n"
-                + "      AND YEAR(m.vencimento) = ?\n"
-                + ");";
-        List<Object> params = new ArrayList();
-        params.add(mes);
-        params.add(ano);
-        List<ResidenciaModal> dados = DAO.runExecuteQuery(sql, params, "ResidenciaModal");
+        String selectSql = """
+            SELECT r.* FROM residencias r
+            WHERE NOT EXISTS (
+                SELECT 1 FROM mensalidade m
+                WHERE m.id_residencia = r.id
+                  AND MONTH(m.vencimento) = ?
+                  AND YEAR(m.vencimento) = ?
+            );
+        """;
 
-        dados.forEach(dado -> {
-            String insert = "INSERT INTO mensalidade (id_residencia, vencimento, valor, status) "
-                    + "VALUE (?, ?, 200, 1)";
-            params.clear();
-            params.add(((ResidenciaModal)dado).getId());
-            params.add(ano + "-" + mes + "-" + "10");
-            
-            try{
-                DAO.runExecuteUpdate(sql, params);
-            }catch(SQLException e){
-                throw new RuntimeException(e);
+        List<Object> selectParams = new ArrayList<>();
+        selectParams.add(mes);
+        selectParams.add(ano);
+
+        List<ResidenciaModal> residenciasSemMensalidade = DAO.runExecuteQuery(selectSql, selectParams, "ResidenciaModal");
+
+        int criadas = 0;
+
+        for (ResidenciaModal residencia : residenciasSemMensalidade) {
+            String insertSql = "INSERT INTO mensalidade (id_residencia, vencimento, valor, status) VALUES (?, ?, 200, 1)";
+
+            List<Object> insertParams = new ArrayList<>();
+            insertParams.add(residencia.getId());
+
+            String vencimento = String.format("%04d-%02d-10", ano, mes);
+            insertParams.add(vencimento);
+
+            try {
+                DAO.runExecuteUpdate(insertSql, insertParams);
+                criadas++;
+            } catch (SQLException e) {
+                throw new SQLException("Erro ao inserir mensalidade para residência ID: " + residencia.getId(), e);
             }
-        });
-        
+        }
+
         return 1;
     }
+
 }

@@ -161,11 +161,18 @@ public class PessoaController {
         return DAO.runExecuteUpdate(sql, params);
     }
     
-    public int searchPessoa(String campo, String valor) throws SQLException {
-        String sql = "SELECT id FROM pessoas WHERE " + campo + " = ?";
-
+    public int searchPessoa(String campo, String valor, int id) throws SQLException {
+        String sql = null;
         List<Object> params = new ArrayList<>();
         params.add(valor);
+
+        if (id <= 0) {
+            sql = "SELECT id FROM pessoas WHERE " + campo + " = ?";
+        } else {
+            sql = "SELECT id FROM pessoas WHERE " + campo + " = ? AND id != ?";
+            params.add(id);
+        }
+
 
         ResultSet propriedades = DAO.runExecuteQuery(sql, params);
 
