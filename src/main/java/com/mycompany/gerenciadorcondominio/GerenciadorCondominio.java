@@ -4,7 +4,7 @@
 
 package com.mycompany.gerenciadorcondominio;
 
-import com.mycompany.gerenciadorcondominio.view.PessoaIndex;
+import com.mycompany.gerenciadorcondominio.view.MainScreen;
 
 
 /**
@@ -14,6 +14,6 @@ import com.mycompany.gerenciadorcondominio.view.PessoaIndex;
 public class GerenciadorCondominio {
 
     public static void main(String[] args) {
-        new PessoaIndex().setVisible(true);
+        new MainScreen();
     }
 }

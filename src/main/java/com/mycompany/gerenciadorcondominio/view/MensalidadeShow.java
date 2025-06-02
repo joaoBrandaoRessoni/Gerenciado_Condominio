@@ -9,7 +9,10 @@ import com.mycompany.gerenciadorcondominio.controller.ResidenciaController;
 import com.mycompany.gerenciadorcondominio.model.MensalidadeModal;
 import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.awt.Color;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -22,29 +25,24 @@ public class MensalidadeShow extends javax.swing.JFrame {
     private int id;
     
     public MensalidadeShow(int id) {
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.id = id;
-        
+
         try{
             MensalidadeModal mensalidade = mensalidadeController.show(id);
-            if(mensalidade != null){
-                mensalidadeVencimentoTxt.setText(mensalidade.getVencimento());
-                mensalidadeValorTxt.setText(mensalidade.getVencimento());
-                String status = mensalidade.getStatus() == 1 ?  "À pagar" : "Paga";
-                mensalidadeStatusTxt.setText(status);
-                
-                ResidenciaModal residencia = new ResidenciaController().showResidencia(mensalidade.getId_residencia());
-                residenciaRuaTxt.setText(residencia.getLogradouro());
-                residenciaNumeroTxt.setText(String.valueOf(residencia.getNumero()));
-                residenciaCepTxt.setText(residencia.getCep());
-            }
-            else{
-                JOptionPane.showMessageDialog(rootPane, "Mensalidade não encontrada");
-                new ResidenciaIndex().setVisible(true);
-                this.dispose();
-            }
+
+            ResidenciaModal residencia = new ResidenciaController().showResidencia(mensalidade.getId_residencia());
+            residenciaRuaTxt.setText(residencia.getLogradouro());
+            residenciaNumeroTxt.setText(String.valueOf(residencia.getNumero()));
+            residenciaCepTxt.setText(residencia.getCep());
+            
+            Date vencimento = mensalidade.getVencimento();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            mensalidadeVencimentoField.setText(sdf.format(vencimento));
+            mensalidadeValorField.setText(String.valueOf(mensalidade.getValor()));
+            mensalidadeStatusComboBox.setSelectedIndex(mensalidade.getStatus());
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -75,16 +73,17 @@ public class MensalidadeShow extends javax.swing.JFrame {
         residenciaNumeroTxt = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         residenciaCepTxt = new javax.swing.JLabel();
-        editarBtn = new javax.swing.JButton();
+        salvarBtn = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        mensalidadeVencimentoTxt = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        mensalidadeValorTxt = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        mensalidadeStatusTxt = new javax.swing.JLabel();
-        fecharBtn = new javax.swing.JButton();
+        mensalidadeVencimentoField = new javax.swing.JFormattedTextField();
+        mensalidadeStatusComboBox = new javax.swing.JComboBox<>();
+        mensalidadeValorField = new javax.swing.JTextField();
+        cancelarBtn = new javax.swing.JButton();
+        excluirBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -127,7 +126,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(residenciaRuaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 32, Short.MAX_VALUE))
+                        .addGap(0, 10, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -157,13 +156,13 @@ public class MensalidadeShow extends javax.swing.JFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        editarBtn.setBackground(new java.awt.Color(204, 204, 255));
-        editarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        editarBtn.setText("Editar");
-        editarBtn.setName("editarBtn"); // NOI18N
-        editarBtn.addActionListener(new java.awt.event.ActionListener() {
+        salvarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        salvarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        salvarBtn.setText("Salvar");
+        salvarBtn.setName("salvarBtn"); // NOI18N
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editarBtnActionPerformed(evt);
+                salvarBtnActionPerformed(evt);
             }
         });
 
@@ -178,20 +177,25 @@ public class MensalidadeShow extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("Valor");
 
-        mensalidadeVencimentoTxt.setText("10/01/2025");
-        mensalidadeVencimentoTxt.setName("enderecoRuaTxt"); // NOI18N
-
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Status");
-
-        mensalidadeValorTxt.setText("23,25");
-        mensalidadeValorTxt.setName("enderecoNumeroTxt"); // NOI18N
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel13.setText("Vencimento");
 
-        mensalidadeStatusTxt.setText("12123123");
-        mensalidadeStatusTxt.setName("enderecoCepTxt"); // NOI18N
+        try {
+            mensalidadeVencimentoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        mensalidadeStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "À pagar", "Paga" }));
+
+        mensalidadeValorField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mensalidadeValorFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -200,20 +204,17 @@ public class MensalidadeShow extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(123, 123, 123))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(mensalidadeVencimentoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(mensalidadeValorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)))
+                    .addComponent(jLabel13)
+                    .addComponent(mensalidadeVencimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(mensalidadeStatusTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                    .addComponent(jLabel5)
+                    .addComponent(mensalidadeValorField, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mensalidadeStatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addGap(21, 21, 21))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,19 +226,29 @@ public class MensalidadeShow extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mensalidadeVencimentoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mensalidadeValorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mensalidadeStatusTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(mensalidadeVencimentoField, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(mensalidadeStatusComboBox)
+                    .addComponent(mensalidadeValorField))
+                .addGap(10, 10, 10))
         );
 
-        fecharBtn.setBackground(new java.awt.Color(204, 204, 255));
-        fecharBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        fecharBtn.setText("Fechar");
-        fecharBtn.setName("editarBtn"); // NOI18N
-        fecharBtn.addActionListener(new java.awt.event.ActionListener() {
+        cancelarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        cancelarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cancelarBtn.setText("Cancelar");
+        cancelarBtn.setName("editarBtn"); // NOI18N
+        cancelarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fecharBtnActionPerformed(evt);
+                cancelarBtnActionPerformed(evt);
+            }
+        });
+
+        excluirBtn.setBackground(new java.awt.Color(204, 204, 255));
+        excluirBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        excluirBtn.setText("Excluir");
+        excluirBtn.setName("editarBtn"); // NOI18N
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBtnActionPerformed(evt);
             }
         });
 
@@ -249,20 +260,23 @@ public class MensalidadeShow extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
-                            .addComponent(jLabel1)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel1))
+                        .addContainerGap(508, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
-                .addComponent(fecharBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(242, 242, 242))
+                .addComponent(salvarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(167, 167, 167))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,7 +285,7 @@ public class MensalidadeShow extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jLabel15)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,25 +294,74 @@ public class MensalidadeShow extends javax.swing.JFrame {
                         .addGap(196, 196, 196))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(editarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fecharBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(salvarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cancelarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(excluirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(77, 77, 77))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void editarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarBtnActionPerformed
-        // botão de editar
-        new MensalidadeEdit(id).setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_editarBtnActionPerformed
+    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
+        // botão de salvar
+                
+        try{
+            String vencimentoString = mensalidadeVencimentoField.getText();
+            double valor = Double.parseDouble(mensalidadeValorField.getText());
+            int status = mensalidadeStatusComboBox.getSelectedIndex();
+            
+            try{
+                java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(vencimentoString);
+                Date vencimento = new Date(utilDate.getTime());
+                
+                if(mensalidadeController.editarMensalidade(vencimento, valor, status, id) != 0){
+                    JOptionPane.showMessageDialog(rootPane, "Mensalidade editada!");
+                    
+                    new MensalidadeIndex();
+                    this.dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(rootPane, "Erro ao editar mensalidade");
+                }
+            }
+            catch(ParseException e){
+                JOptionPane.showMessageDialog(rootPane, "Data do vencimento incorreta. Formato correto: xx/xx/xxxx");
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
+    }//GEN-LAST:event_salvarBtnActionPerformed
 
-    private void fecharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtnActionPerformed
-        // botão de fechar
-        new MensalidadeIndex().setVisible(true);
+    private void cancelarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtnActionPerformed
+        // botão de cancelar
+        new MensalidadeIndex();
         this.dispose();
-    }//GEN-LAST:event_fecharBtnActionPerformed
+    }//GEN-LAST:event_cancelarBtnActionPerformed
+
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        // botão de excluir
+        try{
+            if(mensalidadeController.deletarMensalidade(id) == 1){
+                JOptionPane.showMessageDialog(rootPane, "Mensalidade deletada!");
+           
+                new MensalidadeIndex();
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Erro ao excluir mensalidade");
+            }
+        }
+        catch(SQLException e){
+            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+        }
+    }//GEN-LAST:event_excluirBtnActionPerformed
+
+    private void mensalidadeValorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mensalidadeValorFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mensalidadeValorFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,6 +390,12 @@ public class MensalidadeShow extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -337,8 +406,8 @@ public class MensalidadeShow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton editarBtn;
-    private javax.swing.JButton fecharBtn;
+    private javax.swing.JButton cancelarBtn;
+    private javax.swing.JButton excluirBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -349,11 +418,12 @@ public class MensalidadeShow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JLabel mensalidadeStatusTxt;
-    private javax.swing.JLabel mensalidadeValorTxt;
-    private javax.swing.JLabel mensalidadeVencimentoTxt;
+    private javax.swing.JComboBox<String> mensalidadeStatusComboBox;
+    private javax.swing.JTextField mensalidadeValorField;
+    private javax.swing.JFormattedTextField mensalidadeVencimentoField;
     private javax.swing.JLabel residenciaCepTxt;
     private javax.swing.JLabel residenciaNumeroTxt;
     private javax.swing.JLabel residenciaRuaTxt;
+    private javax.swing.JButton salvarBtn;
     // End of variables declaration//GEN-END:variables
 }

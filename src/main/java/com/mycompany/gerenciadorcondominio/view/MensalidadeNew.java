@@ -7,6 +7,7 @@ package com.mycompany.gerenciadorcondominio.view;
 import com.mycompany.gerenciadorcondominio.controller.MensalidadeController;
 import java.awt.Color;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,7 +22,8 @@ public class MensalidadeNew extends javax.swing.JFrame {
     public MensalidadeNew() {
         screenConfigs();
         initComponents();
-        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         for (int mes = 1; mes <= 12; mes++) {
             mesesComboBox.addItem(String.valueOf(mes));
         }
@@ -34,7 +36,6 @@ public class MensalidadeNew extends javax.swing.JFrame {
         this.setBackground(new Color(30, 144, 255));
         this.setSize(950, 700);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -286,8 +287,8 @@ public class MensalidadeNew extends javax.swing.JFrame {
 
     private void criarMensalidadesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarMensalidadesBtnActionPerformed
         // TODO add your handling code here:
-        int mes = (int) mesesComboBox.getSelectedIndex();
-        int ano = (int) anosComboBox.getSelectedIndex();
+        int mes = Integer.parseInt(mesesComboBox.getSelectedItem().toString());
+        int ano = Integer.parseInt(anosComboBox.getSelectedItem().toString());
 
         if(mes != 0 && ano != 0){
             try{
@@ -323,7 +324,7 @@ public class MensalidadeNew extends javax.swing.JFrame {
 
     private void paymentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentBtnActionPerformed
         this.setVisible(false);
-        MensalidadeNew p = new MensalidadeNew();
+        new MensalidadeIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
 
     private void houseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houseBtnActionPerformed

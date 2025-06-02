@@ -25,10 +25,10 @@ public class PessoaNew extends javax.swing.JFrame {
     PessoaController pessoaController = new PessoaController();
 
     public PessoaNew() {
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
-        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         // dados da residencia atual
         String residenciaTexto;
         
@@ -67,9 +67,9 @@ public class PessoaNew extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         moradorNomeField = new javax.swing.JTextField();
-        moradorDtNascimentoField = new javax.swing.JFormattedTextField();
         moradorRgField = new javax.swing.JFormattedTextField();
         moradorCpfField = new javax.swing.JFormattedTextField();
+        moradorDtNascimentoField = new javax.swing.JFormattedTextField();
         jLabel16 = new javax.swing.JLabel();
         residenciaAtualComboBox = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
@@ -101,10 +101,6 @@ public class PessoaNew extends javax.swing.JFrame {
         moradorNomeField.setText("Joaquim da Silva");
         moradorNomeField.setName("moradorNomeField"); // NOI18N
 
-        moradorDtNascimentoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        moradorDtNascimentoField.setText("10012001");
-        moradorDtNascimentoField.setName("moradorDtNascimentoField"); // NOI18N
-
         try {
             moradorRgField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
         } catch (java.text.ParseException ex) {
@@ -120,6 +116,12 @@ public class PessoaNew extends javax.swing.JFrame {
         }
         moradorCpfField.setText("123.123.123-12");
         moradorCpfField.setName("moradorCpfField"); // NOI18N
+
+        try {
+            moradorDtNascimentoField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -146,9 +148,11 @@ public class PessoaNew extends javax.swing.JFrame {
                                 .addComponent(jLabel10)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(moradorDtNascimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel11))
+                                    .addComponent(moradorDtNascimentoField, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -177,7 +181,7 @@ public class PessoaNew extends javax.swing.JFrame {
         jLabel16.setText("Residência atual");
 
         residenciaAtualComboBox.setBackground(new java.awt.Color(204, 204, 255));
-        residenciaAtualComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Residências" }));
+        residenciaAtualComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione..." }));
         residenciaAtualComboBox.setName("residenciaAtualSelect"); // NOI18N
 
         jButton2.setBackground(new java.awt.Color(204, 204, 255));
@@ -253,14 +257,25 @@ public class PessoaNew extends javax.swing.JFrame {
         String rg = moradorRgField.getText();
 
         if(nome != null && dtNascimentoString != null && cpf != null && rg != null){
-            
             try{
                 java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(dtNascimentoString);
                 Date dtNascimento = new Date(utilDate.getTime());
-                String residenciaSelecionada = (String) residenciaAtualComboBox.getSelectedItem();
-
+                
+                String residenciaSelecionada = null;
+                if (residenciaAtualComboBox.getSelectedIndex() != 0) {
+                    residenciaSelecionada = (String) residenciaAtualComboBox.getSelectedItem();
+                } 
+                
                 // adicionar novo registro de pessoa
                 try{
+                    if (pessoaController.searchPessoa(cpf) == 1) {
+                        JOptionPane.showMessageDialog(rootPane, "CPF já cadastrado");
+                    }
+                    
+                    if (pessoaController.searchPessoa(rg) == 1) {
+                        JOptionPane.showMessageDialog(rootPane, "RG já cadastrado");
+                    }
+                                    
                     if(pessoaController.inserir(nome, dtNascimento, cpf, rg) == 1){
                         if(residenciaSelecionada != null){                        
                             // atribuir a nova pessoa à residência selecionada
@@ -279,7 +294,7 @@ public class PessoaNew extends javax.swing.JFrame {
                         }                    
 
                         // voltar para o index
-                        new PessoaIndex().setVisible(true);
+                        new PessoaIndex();
                         this.dispose();
                     }else{
                         JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar o morador " + nome);

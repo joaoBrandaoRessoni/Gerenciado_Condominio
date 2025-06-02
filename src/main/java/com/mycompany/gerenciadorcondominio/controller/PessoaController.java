@@ -21,38 +21,40 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PessoaController {
 
-    public JTable index(JTable jTable) throws SQLException {
+    public class PessoaTableData {
+        public JTable table;
+        public List<Integer> ids;
+    }
+        
+    public PessoaTableData index(JTable jTable) throws SQLException {
         String sql = "SELECT p.*, count(*) as casas\n"
                 + "FROM pessoas p\n"
-                + "JOIN morador_residencia mr ON p.id = mr.id_pessoa\n"
-                + "JOIN residencias r ON r.id = mr.id\n"
+                + "LEFT JOIN morador_residencia mr ON p.id = mr.id_pessoa\n"
+                + "LEFT JOIN residencias r ON r.id = mr.id\n"
                 + "GROUP BY p.id;";
         ResultSet pessoas = DAO.runExecuteQuery(sql, new ArrayList<>());
 
-        int rows = 0;
+        DefaultTableModel dtm = new DefaultTableModel(new Object[]{"Nome", "CPF", "RG", "Data de nascimento"}, 0);
+        List<Integer> ids = new ArrayList<>();
 
-        if (pessoas.last()) {
-            rows = pessoas.getRow();
-            pessoas.beforeFirst();
+        while (pessoas.next()) {
+            ids.add(pessoas.getInt("p.id"));
+            dtm.addRow(new Object[]{
+                pessoas.getString("nome"),
+                pessoas.getString("cpf"),
+                pessoas.getString("rg"),
+                pessoas.getString("dt_nasc")
+            });
         }
 
-        DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
-        dtm.setRowCount(rows);
+        pessoas.close();
         jTable.setModel(dtm);
 
-        int posicaoLinha = 0;
-        
-        while(pessoas.next()){
-            jTable.setValueAt(pessoas.getInt("id"), posicaoLinha, 0);
-            jTable.setValueAt(pessoas.getString("nome"), posicaoLinha, 1);
-            jTable.setValueAt(pessoas.getString("cpf"), posicaoLinha, 2);
-            jTable.setValueAt(pessoas.getInt("casas"), posicaoLinha, 3);
-            posicaoLinha++;
-        }
-        
-        pessoas.close();
+        PessoaController.PessoaTableData data = new PessoaController.PessoaTableData();
+        data.table = jTable;
+        data.ids = ids;
 
-        return jTable;
+        return data;
     }
     
     public List<PessoaModal> indexPessoa() throws SQLException {
@@ -81,34 +83,26 @@ public class PessoaController {
     }
 
     public JTable showPropriedades(int idPessoa, JTable jTable) throws SQLException {
-        //Buscas as propriedades
         String sql = "SELECT * FROM residencias WHERE id_proprietario = ?";
-        List<Object> params = new ArrayList();
+        List<Object> params = new ArrayList<>();
         params.add(idPessoa);
 
         ResultSet propriedades = DAO.runExecuteQuery(sql, params);
-        
-        int rows = 0;
 
-        if (propriedades.last()) {
-            rows = propriedades.getRow();
-            propriedades.beforeFirst();
+        DefaultTableModel dtm = new DefaultTableModel(new Object[]{"Rua", "Número", "CEP"}, 0);
+        List<Integer> ids = new ArrayList<>();
+
+        while (propriedades.next()) {
+            ids.add(propriedades.getInt("id")); 
+            dtm.addRow(new Object[]{
+                propriedades.getString("logradouro"),
+                propriedades.getInt("numero"),
+                propriedades.getString("cep")
+            });
         }
 
-        DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
-        dtm.setRowCount(rows);
-        jTable.setModel(dtm);
-
-        int posicaoLinha = 0;
-        
-        while(propriedades.next()){
-            jTable.setValueAt(propriedades.getString("rua"), posicaoLinha, 0);
-            jTable.setValueAt(propriedades.getInt("numero"), posicaoLinha, 1);
-            jTable.setValueAt(propriedades.getString("cep"), posicaoLinha, 2);
-            posicaoLinha++;
-        }
-        
         propriedades.close();
+        jTable.setModel(dtm);
 
         return jTable;
     }
@@ -116,7 +110,7 @@ public class PessoaController {
     public ResidenciaModal showMoradia(int idPessoa) throws SQLException {
         //Busca a residencia que ele mora
         String sql = "SELECT r.* FROM residencias AS r "
-                + "JOIN morador_residencia ON id_residencia = r.id "
+                + "LEFT JOIN morador_residencia ON id_residencia = r.id "
                 + "WHERE id_pessoa = ?";
         List<Object> params = new ArrayList();
         params.add(idPessoa);
@@ -165,5 +159,41 @@ public class PessoaController {
         params.add(idPessoa);
 
         return DAO.runExecuteUpdate(sql, params);
+    }
+    
+    public int searchPessoa(String campo) throws SQLException  {
+        String sql = "SELECT  id from pessoas where ? = ?";
+        List<Object> params = new ArrayList();
+        params.add(campo);
+        params.add(campo);
+        
+        ResultSet propriedades = DAO.runExecuteQuery(sql, params);
+
+        if (propriedades.next()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    public int verifyRelationship(int id) throws SQLException {
+        String sql = "SELECT EXISTS (" 
+                    + "   SELECT 1 FROM residencias WHERE id_proprietario = ?"
+                    + ")"
+                    + "OR EXISTS (" 
+                    + "    SELECT 1 FROM morador_residencia WHERE id_pessoa = ?" 
+                    + ") AS tem_vinculo";
+        
+        List<Object> params = new ArrayList();
+        params.add(id);
+        params.add(id);
+        
+        ResultSet propriedades = DAO.runExecuteQuery(sql, params);
+
+        if (propriedades.next()) {
+            return propriedades.getInt("tem_vinculo");
+        } else {
+            return 0;
+        }
     }
 }

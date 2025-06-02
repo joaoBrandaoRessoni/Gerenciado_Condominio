@@ -18,9 +18,9 @@ public class MainScreen extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public MainScreen() {
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
     
     private void screenConfigs() {

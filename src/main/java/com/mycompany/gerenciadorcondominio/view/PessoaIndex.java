@@ -7,6 +7,7 @@ package com.mycompany.gerenciadorcondominio.view;
 import com.mycompany.gerenciadorcondominio.controller.PessoaController;
 import java.awt.Color;
 import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -20,12 +21,12 @@ public class PessoaIndex extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public PessoaIndex() {
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
-        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         try{        
-            pessoaController.index(moradoresTable);
+            pessoasTable = pessoaController.index(pessoasTable).table;
         }
         catch(SQLException e){
             JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
@@ -59,10 +60,9 @@ public class PessoaIndex extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        moradoresTable = new javax.swing.JTable();
+        pessoasTable = new javax.swing.JTable();
         visualizarBtn = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cadastrarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -156,17 +156,17 @@ public class PessoaIndex extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setText("Mensalidades");
+        jLabel2.setText("Pessoas");
 
-        moradoresTable.setBackground(new java.awt.Color(204, 204, 255));
-        moradoresTable.setModel(new javax.swing.table.DefaultTableModel(
+        pessoasTable.setBackground(new java.awt.Color(204, 204, 255));
+        pessoasTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
-                "ID Residência", "Vencimento", "Valor", "Status"
+                "Nome", "CPF", "RG", "Data Nascimento"
             }
         ) {
             Class[] types = new Class [] {
@@ -184,7 +184,7 @@ public class PessoaIndex extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(moradoresTable);
+        jScrollPane1.setViewportView(pessoasTable);
 
         visualizarBtn.setBackground(new java.awt.Color(204, 204, 255));
         visualizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -196,21 +196,13 @@ public class PessoaIndex extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setBackground(new java.awt.Color(204, 204, 255));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Meses" }));
-        jComboBox2.setName("mesesSelect"); // NOI18N
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        cadastrarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        cadastrarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        cadastrarBtn.setText("Cadastrar");
+        cadastrarBtn.setName("visualizarBtn"); // NOI18N
+        cadastrarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ano" }));
-        jComboBox1.setName("anoSelect"); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cadastrarBtnActionPerformed(evt);
             }
         });
 
@@ -222,12 +214,10 @@ public class PessoaIndex extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cadastrarBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(visualizarBtn))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
@@ -244,9 +234,8 @@ public class PessoaIndex extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2)
-                            .addComponent(jComboBox1)
-                            .addComponent(visualizarBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cadastrarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(visualizarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
@@ -278,14 +267,6 @@ public class PessoaIndex extends javax.swing.JFrame {
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_pessoaBtnActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // mês
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // ano
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         System.exit(0);
     }//GEN-LAST:event_logoutBtnActionPerformed
@@ -299,6 +280,29 @@ public class PessoaIndex extends javax.swing.JFrame {
         this.setVisible(false);
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
+
+    private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
+        int row = pessoasTable.getSelectedRow();
+        
+        if (row == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecione uma pessoa para continuar", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                List<Integer> ids = pessoaController.index(pessoasTable).ids;
+                int id = ids.get(row);
+
+                new PessoaShow(id);
+                this.setVisible(false);
+            } catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            }
+        }      
+    }//GEN-LAST:event_visualizarBtnActionPerformed
+
+    private void cadastrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarBtnActionPerformed
+        new PessoaNew();
+        this.setVisible(true);
+    }//GEN-LAST:event_cadastrarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -399,9 +403,8 @@ public class PessoaIndex extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cadastrarBtn;
     private javax.swing.JButton houseBtn;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -410,9 +413,9 @@ public class PessoaIndex extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton logoutBtn;
-    private javax.swing.JTable moradoresTable;
     private javax.swing.JButton paymentBtn;
     private javax.swing.JButton pessoaBtn;
+    private javax.swing.JTable pessoasTable;
     private javax.swing.JButton visualizarBtn;
     // End of variables declaration//GEN-END:variables
 }

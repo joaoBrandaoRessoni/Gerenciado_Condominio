@@ -28,10 +28,10 @@ public class ResidenciaNew extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public ResidenciaNew() {
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
-        
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
         try {
             List<PessoaModal> pessoas = pessoaController.indexPessoa();
 
@@ -97,10 +97,9 @@ public class ResidenciaNew extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Rua");
 
-        ruaField.setText("Avenida das Flores");
+        ruaField.setToolTipText("");
         ruaField.setName("residenciaRuaField"); // NOI18N
 
-        numeroField.setText("23");
         numeroField.setName("residenciaNumeroField"); // NOI18N
 
         try {
@@ -110,6 +109,11 @@ public class ResidenciaNew extends javax.swing.JFrame {
         }
         cepField.setText("12.123-123");
         cepField.setName("residenciaCepField"); // NOI18N
+        cepField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cepFieldActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -248,6 +252,10 @@ public class ResidenciaNew extends javax.swing.JFrame {
         }
         
         try {
+            if (residenciaController.searchResidencia(rua, numero, cep) == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Residência já cadastrada");
+            }
+            
             residenciaController.insertResidencia(idProprietario, numero, cep, rua);
             JOptionPane.showMessageDialog(null, "Residência cadastrada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
@@ -267,6 +275,10 @@ public class ResidenciaNew extends javax.swing.JFrame {
     private void pessoasBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pessoasBoxActionPerformed
 
     }//GEN-LAST:event_pessoasBoxActionPerformed
+
+    private void cepFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cepFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cepFieldActionPerformed
 
     /**
      * @param args the command line arguments

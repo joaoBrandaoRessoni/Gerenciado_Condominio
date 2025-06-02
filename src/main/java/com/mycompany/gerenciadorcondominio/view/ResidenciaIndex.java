@@ -22,15 +22,15 @@ public class ResidenciaIndex extends javax.swing.JFrame {
      * Creates new form ResidenciaShow
      */
     public ResidenciaIndex() {
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         screenConfigs();
         initComponents();
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         
         try{        
             residenciasTable = residenciaController.index(residenciasTable).table;
         }
         catch(SQLException e){
-            JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            JOptionPane.showMessageDialog(rootPane, "Erro ao encontrar pessoas");
         }
     }
 

@@ -8,6 +8,7 @@ import com.mycompany.gerenciadorcondominio.model.DAO;
 import com.mycompany.gerenciadorcondominio.model.MensalidadeModal;
 import com.mycompany.gerenciadorcondominio.model.ResidenciaModal;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,36 +20,86 @@ import javax.swing.table.DefaultTableModel;
  * @author joao_
  */
 public class MensalidadeController {
+    
+    public class MensalidadeTableData {
+        public JTable table;
+        public List<Integer> ids;
+    }
 
-    public JTable index(int mes, int ano, JTable jTable) throws SQLException {
-        String sql = "SELECT "
-                + "    m.id, r.id AS id_residencia, m.vencimento, m.valor, m.status "
-                + "FROM residencias r "
-                + "LEFT JOIN mensalidade m ON m.id_residencia = r.id "
-                + "WHERE MONTH(m.vencimento) = ? AND YEAR(m.vencimento) = ?";
-        List<Object> params = new ArrayList();
-        params.add(mes);
-        params.add(ano);
+    public MensalidadeTableData  index(int mes, int ano, JTable jTable) throws SQLException {
+        String sql;
+        List<Object> params = new ArrayList<>();
 
-        List<MensalidadeModal> mensalidades = DAO.runExecuteQuery(sql, params, "MensalidadeModal");
-
-        DefaultTableModel dtm = (DefaultTableModel) jTable.getModel();
-        dtm.setRowCount(mensalidades.size());
-        jTable.setModel(dtm);
-
-        int posicaoLinha = 0;
-
-        for (int i = 0; i < mensalidades.size(); i++) {
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getId(), posicaoLinha, 0);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getId_residencia(), posicaoLinha, 1);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getVencimento(), posicaoLinha, 2);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getValor(), posicaoLinha, 3);
-            jTable.setValueAt(((MensalidadeModal) mensalidades.get(i)).getStatus(), posicaoLinha, 4);
-            posicaoLinha++;
+        if (mes == 0 && ano == 0) {
+            // Buscar as últimas 15 mensalidades ordenadas por vencimento decrescente
+            sql = "SELECT " 
+                    + "    m.id, r.id AS id_residencia, r.logradouro AS rua, r.numero AS numero,"
+                    + "    p.nome AS nome, p.cpf AS cpf," 
+                    + "    m.vencimento, m.valor, m.status" 
+                    + " FROM mensalidade m" 
+                    + " LEFT JOIN residencias r ON r.id = m.id_residencia" 
+                    + " LEFT JOIN pessoas p ON p.id = r.id_proprietario" 
+                    + " ORDER BY m.vencimento DESC" 
+                    + " LIMIT 15";
+        } else {
+            // Busca filtrada por mês e ano
+            sql = "SELECT " 
+                    + "    m.id, r.id AS id_residencia, r.logradouro AS rua, r.numero AS numero," 
+                    + "    p.nome AS nome, p.cpf AS cpf," 
+                    + "    m.vencimento, m.valor, m.status" 
+                    + " FROM mensalidade m" 
+                    + " LEFT JOIN residencias r ON r.id = m.id_residencia"
+                    + " LEFT JOIN pessoas p ON p.id = r.id_proprietario" 
+                    + " WHERE MONTH(m.vencimento) = ? AND YEAR(m.vencimento) = ?";
+            params.add(mes);
+            params.add(ano);
         }
 
-        return jTable;
+        ResultSet mensalidades = DAO.runExecuteQuery(sql, params);
+
+        DefaultTableModel dtm = new DefaultTableModel(
+            new Object[]{"Residência", "Proprietário", "Vencimento", "Valor", "Status"}, 0
+        );
+
+        List<Integer> ids = new ArrayList<>();
+
+        while (mensalidades.next()) {
+            ids.add(mensalidades.getInt("m.id"));
+            String rua = mensalidades.getString("rua");     
+            int numero = mensalidades.getInt("numero");     
+            String nome = mensalidades.getString("nome");  
+            String cpf = mensalidades.getString("cpf");
+            String status = mensalidades.getInt("status") == 1 ? "À Pagar" : "Pago";
+                    
+            String ruaNumero = "";
+            if (rua != null) {
+                ruaNumero = rua + " - " + numero;
+            }
+             
+            String nomeCpf = "";
+            if (cpf != null) {
+                nomeCpf = nome + " - " + cpf;
+            }
+
+            dtm.addRow(new Object[] {
+                ruaNumero,
+                nomeCpf,
+                mensalidades.getDate("vencimento"),
+                mensalidades.getDouble("valor"),
+                status
+            });
+        }
+
+        mensalidades.close();
+        jTable.setModel(dtm);
+        
+        MensalidadeController.MensalidadeTableData data = new MensalidadeController.MensalidadeTableData();
+        data.table = jTable;
+        data.ids = ids;
+
+        return data;
     }
+
     
     public MensalidadeModal show(int id) throws SQLException {
         String sql = "SELECT * FROM mensalidade WHERE id = ?";
@@ -78,7 +129,7 @@ public class MensalidadeController {
         String sql = "UPDATE mensalidade SET "
                 + "vencimento = ?, "
                 + "valor = ?, "
-                + "status = ?, "
+                + "status = ? "
                 + "WHERE id = ?";
         List<Object> params = new ArrayList();
         params.add(dataNascimento.toString());

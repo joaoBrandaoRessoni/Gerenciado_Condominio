@@ -33,7 +33,7 @@ public class ResidenciaController {
     public ResidenciaTableData index(JTable jTable) throws SQLException {
         String sql = "SELECT r.id, r.logradouro, r.numero, pp.nome AS proprietario, COUNT(DISTINCT p.id) AS moradores "
             + "FROM residencias r "
-            + "JOIN pessoas pp ON r.id_proprietario = pp.id "
+            + "LEFT JOIN pessoas pp ON r.id_proprietario = pp.id "
             + "LEFT JOIN morador_residencia mr ON r.id = mr.id_residencia "
             + "LEFT JOIN pessoas p ON mr.id_pessoa = p.id "
             + "GROUP BY r.id, r.logradouro, r.numero, pp.nome";
@@ -132,7 +132,7 @@ public class ResidenciaController {
     public int alterarProprietario(int idNovoProprietario, int idResidencia) throws SQLException {
         String sql = "UPDATE residencias SET id_proprietario = ? WHERE id = ?";
         List<Object> params = new ArrayList();
-        params.add(idNovoProprietario);
+        params.add(idNovoProprietario == -1 ? null : idNovoProprietario);
         params.add(idResidencia);
 
         return DAO.runExecuteUpdate(sql, params);
@@ -189,5 +189,21 @@ public class ResidenciaController {
         params.add(idResidencia);
 
         return DAO.runExecuteUpdate(sql, params);
+    }
+    
+    public int searchResidencia(String logradouro, int numero, String cep) throws SQLException {
+        String sql = "SELECT id from residencia where logradouro = ? and numero = ? and cep = ?";
+        List<Object> params = new ArrayList();
+        params.add(logradouro);
+        params.add(numero);
+        params.add(cep);
+        
+        ResultSet propriedades = DAO.runExecuteQuery(sql, params);
+
+        if (propriedades.next()) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
