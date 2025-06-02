@@ -4,21 +4,30 @@
  */
 package com.mycompany.gerenciadorcondominio.view;
 
+import com.mycompany.gerenciadorcondominio.controller.MensalidadeController;
 import java.awt.Color;
-import javax.swing.JFrame;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Luiza
  */
 public class MensalidadeIndex extends javax.swing.JFrame {
-
+    MensalidadeController mensalidadeController = new MensalidadeController();
     /**
      * Creates new form ResidenciaShow
      */
     public MensalidadeIndex() {
         screenConfigs();
         initComponents();
+        
+        for (int mes = 1; mes <= 12; mes++) {
+            mesesComboBox.addItem(String.valueOf(mes));
+        }
+        for (int ano = 2025; ano >= 1990; ano--) {
+            anosComboBox.addItem(String.valueOf(ano));
+        }
     }
     
     private void screenConfigs() {
@@ -49,10 +58,11 @@ public class MensalidadeIndex extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        mensalidadesTable = new javax.swing.JTable();
+        visualizarBtn = new javax.swing.JButton();
+        mesesComboBox = new javax.swing.JComboBox<>();
+        anosComboBox = new javax.swing.JComboBox<>();
+        buscarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 255));
@@ -148,22 +158,22 @@ public class MensalidadeIndex extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Mensalidades");
 
-        jTable1.setBackground(new java.awt.Color(204, 204, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        mensalidadesTable.setBackground(new java.awt.Color(204, 204, 255));
+        mensalidadesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID Residência", "Vencimento", "Valor", "Status"
+                "ID", "ID Residência", "Vencimento", "Valor", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -174,28 +184,41 @@ public class MensalidadeIndex extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(mensalidadesTable);
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton6.setText("Visualizar");
-        jButton6.setName("visualizarBtn"); // NOI18N
-
-        jComboBox2.setBackground(new java.awt.Color(204, 204, 255));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Meses" }));
-        jComboBox2.setName("mesesSelect"); // NOI18N
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        visualizarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        visualizarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        visualizarBtn.setText("Visualizar");
+        visualizarBtn.setName("visualizarBtn"); // NOI18N
+        visualizarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                visualizarBtnActionPerformed(evt);
             }
         });
 
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ano" }));
-        jComboBox1.setName("anoSelect"); // NOI18N
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        mesesComboBox.setBackground(new java.awt.Color(204, 204, 255));
+        mesesComboBox.setName("mesesSelect"); // NOI18N
+        mesesComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                mesesComboBoxActionPerformed(evt);
+            }
+        });
+
+        anosComboBox.setBackground(new java.awt.Color(204, 204, 255));
+        anosComboBox.setName("anoSelect"); // NOI18N
+        anosComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anosComboBoxActionPerformed(evt);
+            }
+        });
+
+        buscarBtn.setBackground(new java.awt.Color(204, 204, 255));
+        buscarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        buscarBtn.setText("Buscar");
+        buscarBtn.setName("visualizarBtn"); // NOI18N
+        buscarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarBtnActionPerformed(evt);
             }
         });
 
@@ -209,11 +232,13 @@ public class MensalidadeIndex extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(mesesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(anosComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buscarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton6))
+                        .addComponent(visualizarBtn))
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -229,9 +254,10 @@ public class MensalidadeIndex extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2)
-                            .addComponent(jComboBox1)
-                            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(buscarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(mesesComboBox)
+                            .addComponent(visualizarBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(anosComboBox))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24))
@@ -263,13 +289,13 @@ public class MensalidadeIndex extends javax.swing.JFrame {
         PessoaIndex p = new PessoaIndex();
     }//GEN-LAST:event_pessoaBtnActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void mesesComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesesComboBoxActionPerformed
         // mês
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_mesesComboBoxActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void anosComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anosComboBoxActionPerformed
         // ano
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_anosComboBoxActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         System.exit(0);
@@ -284,6 +310,37 @@ public class MensalidadeIndex extends javax.swing.JFrame {
         this.setVisible(false);
         MensalidadeIndex p = new MensalidadeIndex();
     }//GEN-LAST:event_paymentBtnActionPerformed
+
+    private void visualizarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarBtnActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = mensalidadesTable.getSelectedRow();
+        if(linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(rootPane, "Selecione uma mensalidade para visualizar");
+        }
+        else{
+            int id = (Integer) mensalidadesTable.getValueAt(linhaSelecionada, 0);
+            new MensalidadeShow(id).setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_visualizarBtnActionPerformed
+
+    private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
+        // TODO add your handling code here:
+        int mes = (int) mesesComboBox.getSelectedIndex();
+        int ano = (int) anosComboBox.getSelectedIndex();
+
+        if((mes != 0) && (ano != 0)){
+            try{        
+                mensalidadeController.index(mes, ano, mensalidadesTable);
+            }
+            catch(SQLException e){
+                JOptionPane.showMessageDialog(rootPane, "Erro ao conectar com o banco de dados");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Mês e ano são obrigatórios");
+        }
+    }//GEN-LAST:event_buscarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,10 +409,9 @@ public class MensalidadeIndex extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> anosComboBox;
+    private javax.swing.JButton buscarBtn;
     private javax.swing.JButton houseBtn;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -363,9 +419,11 @@ public class MensalidadeIndex extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton logoutBtn;
+    private javax.swing.JTable mensalidadesTable;
+    private javax.swing.JComboBox<String> mesesComboBox;
     private javax.swing.JButton paymentBtn;
     private javax.swing.JButton pessoaBtn;
+    private javax.swing.JButton visualizarBtn;
     // End of variables declaration//GEN-END:variables
 }
